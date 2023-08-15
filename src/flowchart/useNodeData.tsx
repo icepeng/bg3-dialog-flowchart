@@ -50,10 +50,7 @@ function useNodeDataState(dialogData: DialogData) {
     [dialogData]
   );
   const rootNodes = React.useMemo(
-    () =>
-      dialogData.RootNodes.map((id) => dialogData.Nodes[id]).filter(
-        (node) => node.TaggedTextList.length > 0
-      ),
+    () => dialogData.RootNodes.map((id) => dialogData.Nodes[id]),
     [dialogData]
   );
 
