@@ -1,0 +1,13 @@
+.react-flow {
+  background-color: #000;
+}
+
+.react-flow__node-default:not(#\#) {
+  background-color: #343435;
+  color: #f9f9f9;
+  border-color: #888;
+}
+
+.react-flow__minimap:not(#\#) {
+  background-color: #343435;
+}

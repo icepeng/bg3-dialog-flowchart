@@ -34,7 +34,7 @@ function Config() {
         <option value={""}>Select a root node</option>
         {rootNodes.map((node) => (
           <option key={node.UUID} value={node.UUID}>
-            {node.TaggedTextList?.[0]?.TagTexts?.[0]?.Text.Value}
+            {node.EditorData.logicalname}
           </option>
         ))}
       </Select>
