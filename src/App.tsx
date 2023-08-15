@@ -1,4 +1,10 @@
-import { Button, ChakraProvider, Flex, Input } from "@chakra-ui/react";
+import {
+  Button,
+  ChakraProvider,
+  Flex,
+  Input,
+  cookieStorageManager,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { DialogDataProvider, useDialogData } from "./data/useDialogData";
 import Workspace from "./flowchart/Workspace";
@@ -27,7 +33,11 @@ function PathSelector() {
 
 function App() {
   return (
-    <ChakraProvider theme={theme} resetCSS>
+    <ChakraProvider
+      colorModeManager={cookieStorageManager}
+      theme={theme}
+      resetCSS
+    >
       <DialogDataProvider>
         <Flex direction={"column"} height={"100vh"} width={"100vw"}>
           <PathSelector />
