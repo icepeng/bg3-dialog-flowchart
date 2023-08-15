@@ -3,13 +3,15 @@ import { DialogData } from "./types";
 
 // const REMOTE_URL = "https://waldo.team/bg3_dialog/";
 const REMOTE_URL = "http://localhost:8080/";
+const DEFAULT_PATH =
+  "Mods/Gustav/Story/Dialogs/Act1/Chapel/CHA_Crypt_Jergal.json";
 
 type DialogDataProviderProps = {
   children: React.ReactNode;
 };
 
 function useDialogDataState() {
-  const [path, setPath] = React.useState<string>();
+  const [path, setPath] = React.useState<string>(DEFAULT_PATH);
   const [dialogData, setDialogData] = React.useState<DialogData>();
 
   React.useEffect(() => {
