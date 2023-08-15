@@ -48,7 +48,11 @@ export function getNodesRecursive(
     //   return [];
     // }
 
-    return [node, ...node.Children.flatMap((child) => rec(child))];
+    return [
+      node,
+      ...node.Children.flatMap((child) => rec(child)),
+      ...(node.JumpTarget ? rec(node.JumpTarget) : []),
+    ];
   }
 
   return rec(rootId);
