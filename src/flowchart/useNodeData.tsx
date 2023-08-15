@@ -62,7 +62,10 @@ function useNodeDataState() {
     [filteredData]
   );
   const processedEdges: Edge[] = useMemo(
-    () => filteredData.flatMap((node) => getEdgesFromData(node)),
+    () =>
+      filteredData
+        .filter((node) => node.Constructor !== "Jump")
+        .flatMap((node) => getEdgesFromData(node)),
     [filteredData]
   );
 
