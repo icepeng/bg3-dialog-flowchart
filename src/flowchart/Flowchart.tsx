@@ -4,28 +4,39 @@ import ReactFlow, {
   Controls,
   MiniMap,
   Node,
+  NodeProps,
   useReactFlow,
 } from "reactflow";
-import { useNodeData } from "./useNodeData";
+import { NodeData } from "../data/types";
 import AliasNode from "./AliasNode";
 import DialogNode from "./DialogNode";
 import JumpNode from "./JumpNode";
-import { NodeData } from "../data/types";
+import { useConfig } from "./useConfig";
+import { useNodeData } from "./useNodeData";
 
-const nodeTypes = {
-  TagAnswer: DialogNode,
+const nodeTypes: Record<
+  NodeData["Constructor"],
+  React.NamedExoticComponent<NodeProps>
+> = {
   Jump: JumpNode,
+  Alias: AliasNode,
+  TagAnswer: DialogNode,
   TagQuestion: DialogNode,
   TagGreeting: DialogNode,
   "Nested Dialog": DialogNode,
-  Alias: AliasNode,
   RollResult: DialogNode,
   Pop: DialogNode,
   ActiveRoll: DialogNode,
+  FallibleQuestionResult: DialogNode,
+  PassiveRoll: DialogNode,
+  TagCinematic: DialogNode,
+  Trade: DialogNode,
+  VisualState: DialogNode,
 };
 
 function Flowchart() {
-  const { rootId, processedNodes, processedEdges } = useNodeData();
+  const { rootId } = useConfig();
+  const { processedNodes, processedEdges } = useNodeData();
   const { fitView } = useReactFlow();
 
   useEffect(() => {
@@ -36,7 +47,7 @@ function Flowchart() {
   const onNodeClick = useCallback(
     (_: React.MouseEvent, node: Node<NodeData>) => {
       if (node.data.Constructor === "Jump") {
-        const targetId = node.data.Children[0];
+        const targetId = node.data.JumpTarget!;
         fitView({ nodes: [{ id: targetId }] });
       }
     },

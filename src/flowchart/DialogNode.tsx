@@ -1,13 +1,14 @@
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
 import { NodeData } from "../data/types";
-import { speakerRecord } from "./useNodeData";
+import { useNodeData } from "./useNodeData";
 
 const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
+  const { getSpeakerName } = useNodeData();
+
   const category = data.Constructor;
   const uuid = data.UUID;
-  const speakerName =
-    speakerRecord[data.SpeakerNo].SpeakerCharacter.DisplayName;
+  const speakerName = getSpeakerName(data.SpeakerNo);
   const label = data.TaggedTextList?.[0]?.TagTexts?.[0]?.Text.Value;
   const checkFlags = data.CheckFlags;
   const hasFlags = checkFlags.length > 0;

@@ -66,17 +66,23 @@ interface CheckOrSetFlag {
 
 export interface NodeData {
   SourceNode?: string;
+  JumpTarget?: string;
   UUID: string;
   Constructor:
     | "TagAnswer"
-    | "Jump"
-    | "TagQuestion"
     | "TagGreeting"
-    | "Nested Dialog"
+    | "TagQuestion"
+    | "Jump"
+    | "TagCinematic"
     | "Alias"
     | "RollResult"
+    | "ActiveRoll"
+    | "PassiveRoll"
+    | "VisualState"
+    | "Trade"
     | "Pop"
-    | "ActiveRoll";
+    | "FallibleQuestionResult"
+    | "Nested Dialog";
   EndNode: boolean;
   Root: boolean;
   ShowOnce: boolean;
@@ -105,4 +111,13 @@ export interface Speaker {
   List: string[];
   SpeakerCharacter: SpeakerCharacter;
   SpeakerGroupName: string | null;
+}
+
+export interface DialogData {
+  Path: string;
+  UUID: string;
+  Category: string;
+  RootNodes: string[];
+  Nodes: Record<string, NodeData>;
+  SpeakerDict: Record<string, Speaker>;
 }
