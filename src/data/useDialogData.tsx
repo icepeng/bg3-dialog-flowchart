@@ -16,11 +16,7 @@ function useDialogDataState() {
 
   React.useEffect(() => {
     if (path !== undefined) {
-      fetch(REMOTE_URL + path, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(REMOTE_URL + path)
         .then((response) => response.json())
         .then((data) => setDialogData(data));
     }
