@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { DialogDataProvider, useDialogData } from "./data/useDialogData";
 import Workspace from "./flowchart/Workspace";
 import theme from "./theme";
+import { TranslationDataProvider } from "./data/useTranslationData";
 
 function PathSelector() {
   const { path, setPath } = useDialogData();
@@ -43,10 +44,12 @@ function App() {
       resetCSS
     >
       <DialogDataProvider>
-        <Flex direction={"column"} height={"100vh"} width={"100vw"}>
-          <PathSelector />
-          <Workspace />
-        </Flex>
+        <TranslationDataProvider>
+          <Flex direction={"column"} height={"100vh"} width={"100vw"}>
+            <PathSelector />
+            <Workspace />
+          </Flex>
+        </TranslationDataProvider>
       </DialogDataProvider>
     </ChakraProvider>
   );
