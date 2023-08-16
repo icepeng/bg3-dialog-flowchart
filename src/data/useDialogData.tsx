@@ -10,8 +10,12 @@ type DialogDataProviderProps = {
   children: React.ReactNode;
 };
 
+const urlParams = new URLSearchParams(window.location.search);
+
 function useDialogDataState() {
-  const [path, setPath] = React.useState<string>(DEFAULT_PATH);
+  const [path, setPath] = React.useState<string>(
+    urlParams.get("path") ?? DEFAULT_PATH
+  );
   const [dialogData, setDialogData] = React.useState<DialogData>();
 
   React.useEffect(() => {

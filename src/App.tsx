@@ -5,7 +5,7 @@ import {
   Input,
   cookieStorageManager,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DialogDataProvider, useDialogData } from "./data/useDialogData";
 import Workspace from "./flowchart/Workspace";
 import theme from "./theme";
@@ -13,6 +13,10 @@ import theme from "./theme";
 function PathSelector() {
   const { path, setPath } = useDialogData();
   const [value, setValue] = useState(path);
+
+  useEffect(() => {
+    setValue(path);
+  }, [path]);
 
   return (
     <Flex>

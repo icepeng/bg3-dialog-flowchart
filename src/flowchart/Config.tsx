@@ -15,10 +15,12 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useReactFlow } from "reactflow";
 import { useConfig } from "./useConfig";
 import { useNodeData } from "./useNodeData";
-import { useReactFlow } from "reactflow";
+
+const urlParams = new URLSearchParams(window.location.search);
 
 function Config() {
   const { rootNodes, flags } = useNodeData();
@@ -28,9 +30,16 @@ function Config() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [nodeSearchId, setNodeSearchId] = useState<string>("");
 
+  // get query param from router to set initial nodeSearchId
+  React.useEffect(() => {
+    const nodeId = urlParams.get("node_id");
+    if (nodeId !== null) {
+      setNodeSearchId(nodeId);
+      setTimeout(() => fitView({ nodes: [{ id: nodeId }] }), 0);
+    }
+  }, [fitView]);
+
   function searchNode() {
-    console.log(nodeSearchId);
-    console.log(rootNodes);
     setTimeout(() => fitView({ nodes: [{ id: nodeSearchId }] }), 0);
   }
 
