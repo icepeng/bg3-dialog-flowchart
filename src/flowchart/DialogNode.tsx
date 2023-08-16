@@ -1,3 +1,4 @@
+import { Divider, VStack } from "@chakra-ui/react";
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
 import { NodeData } from "../data/types";
@@ -9,7 +10,6 @@ const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
   const category = data.Constructor;
   const uuid = data.UUID;
   const speakerName = getSpeakerName(data.SpeakerNo);
-  const label = data.TaggedTextList?.[0]?.TagTexts?.[0]?.Text.Value;
   const checkFlags = data.CheckFlags;
   const hasFlags = checkFlags.length > 0;
   const isEndNode = data.EndNode;
@@ -25,9 +25,17 @@ const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
         [{category}] {hasFlags && "(Flag Check)"}
       </div>
       <div>{uuid}</div>
-      <div>
-        {speakerName}: {label}
-      </div>
+      <VStack divider={<Divider borderWidth={2} />}>
+        {data.TaggedTextList.map((TaggedText, i) => (
+          <VStack divider={<Divider />} key={i}>
+            {TaggedText.TagTexts.map((TagText) => (
+              <div key={TagText.LineId}>
+                {speakerName}: {TagText.Text.Value}
+              </div>
+            ))}
+          </VStack>
+        ))}
+      </VStack>
       {isEndNode && <div>{"<대화 종료>"}</div>}
       <Handle
         type="source"
