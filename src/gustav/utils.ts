@@ -1,4 +1,4 @@
-import { NodeData } from "./types";
+import { Node } from "./types";
 
 export function parsePosition(position: string) {
   const [x, y] = position.split(";");
@@ -9,7 +9,7 @@ export function parsePosition(position: string) {
 }
 
 export function checkFlagFulfilled(
-  data: NodeData,
+  data: Node,
   flagState: Record<string, boolean>
 ) {
   const result = data.CheckFlags.every((checkFlag) => {
@@ -25,12 +25,12 @@ export function checkFlagFulfilled(
 }
 
 export function getNodesRecursive(
-  record: Record<string, NodeData>,
+  record: Record<string, Node>,
   rootId: string
-): NodeData[] {
+): Node[] {
   const visited = new Set<string>();
 
-  function rec(id: string): NodeData[] {
+  function rec(id: string): Node[] {
     if (visited.has(id)) {
       return [];
     }
@@ -58,7 +58,7 @@ export function getNodesRecursive(
   return rec(rootId);
 }
 
-export function getAllFlags(datalist: NodeData[]) {
+export function getAllFlags(datalist: Node[]) {
   return [
     ...new Map(
       datalist

@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
-import { RollResultNodeData } from "../data/types";
+import { RollResultNode } from "../gustav/types";
 
-const RollResultNode = memo<NodeProps<RollResultNodeData>>(
+const RollResultNode = memo<NodeProps<RollResultNode>>(
   ({ data, isConnectable }) => {
     const category = data.Constructor;
 

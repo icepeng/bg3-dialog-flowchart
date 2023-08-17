@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { useDialogData } from "../data/useDialogData";
+import { useGustav } from "../gustav/useGustav";
 
 type ConfigProviderProps = {
   children: React.ReactNode;
 };
 
 function useConfigState() {
-  const { path } = useDialogData();
+  const { path } = useGustav();
 
   const [rootId, setRootId] = useState<string>();
 

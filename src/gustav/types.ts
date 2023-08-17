@@ -64,7 +64,7 @@ interface FlagGroup {
   Type: "Global" | "Tag" | "Object" | "Dialog";
 }
 
-export interface BaseNodeData {
+export interface BaseNode {
   SourceNode?: string;
   JumpTarget?: string;
   UUID: string;
@@ -95,34 +95,34 @@ export interface BaseNodeData {
   EditorData: EditorData;
 }
 
-export interface JumpNodeData extends BaseNodeData {
+export interface JumpNode extends BaseNode {
   Constructor: "Jump";
   SourceNode: string;
   JumpTarget: string;
 }
 
-export interface RollNodeData extends BaseNodeData {
+export interface RollNode extends BaseNode {
   Constructor: "PassiveRoll" | "ActiveRoll";
   RollAbility: string;
   RollAdvantage: number;
   RollType: "SkillCheck" | "RawAbility";
 }
 
-export interface RollResultNodeData extends BaseNodeData {
+export interface RollResultNode extends BaseNode {
   Constructor: "RollResult";
   RollSuccess: boolean;
 }
 
-export interface CinematicNodeData extends BaseNodeData {
+export interface CinematicNode extends BaseNode {
   Constructor: "TagCinematic";
 }
 
-export type NodeData =
-  | BaseNodeData
-  | JumpNodeData
-  | RollNodeData
-  | RollResultNodeData
-  | CinematicNodeData;
+export type Node =
+  | BaseNode
+  | JumpNode
+  | RollNode
+  | RollResultNode
+  | CinematicNode;
 
 interface SpeakerCharacter {
   DisplayName: string;
@@ -147,21 +147,6 @@ export interface DialogData {
   UUID: string;
   Category: string;
   RootNodes: string[];
-  Nodes: Record<string, NodeData>;
+  Nodes: Record<string, Node>;
   SpeakerDict: Record<string, Speaker>;
 }
-
-export interface TranslationUnit {
-  id: number;
-  position: number;
-  context: string;
-  source: string;
-  target: string;
-  fuzzy: boolean;
-  approved: boolean;
-  component: string;
-}
-
-export type TranslationData = {
-  [context: string]: TranslationUnit;
-};

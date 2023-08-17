@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
-import { RollNodeData } from "../data/types";
+import { RollNode } from "../gustav/types";
 import NodePopover from "./NodePopover";
 import NodeTextList from "./NodeTextList";
 import { useNodeData } from "./useNodeData";
 
-const RollNode = memo<NodeProps<RollNodeData>>(({ data, isConnectable }) => {
+const RollNode = memo<NodeProps<RollNode>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
 
   const category = data.Constructor;

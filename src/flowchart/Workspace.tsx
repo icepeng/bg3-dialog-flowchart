@@ -1,12 +1,12 @@
 import { ReactFlowProvider } from "reactflow";
-import { useDialogData } from "../data/useDialogData";
+import { useGustav } from "../gustav/useGustav";
 import Config from "./Config";
 import Flowchart from "./Flowchart";
 import { ConfigProvider } from "./useConfig";
 import { NodeDataProvider } from "./useNodeData";
 
 function Workspace() {
-  const { dialogData } = useDialogData();
+  const { dialogData } = useGustav();
 
   if (!dialogData) return null;
 

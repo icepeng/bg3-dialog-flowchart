@@ -1,9 +1,9 @@
 import { Divider, VStack, chakra } from "@chakra-ui/react";
-import { NodeData, TagText } from "../data/types";
-import { useTranslationData } from "../data/useTranslationData";
+import { Node, TagText } from "../gustav/types";
+import { useWeblate } from "../weblate/useWeblate";
 
 interface NodeTextListProps {
-  nodeData: NodeData;
+  nodeData: Node;
 }
 
 const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
@@ -28,7 +28,7 @@ interface NodeTextProps {
 }
 
 const NodeText: React.FC<NodeTextProps> = ({ TagText }) => {
-  const { getTranslatedText, getWeblateUrl } = useTranslationData();
+  const { getTranslatedText, getWeblateUrl } = useWeblate();
 
   const url = getWeblateUrl(TagText);
   const sourceText = TagText.Text.Value;

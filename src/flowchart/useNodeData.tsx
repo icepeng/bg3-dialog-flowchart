@@ -1,20 +1,31 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { Edge, Node, Position } from "reactflow";
-import { DialogData, NodeData } from "../data/types";
-import { getNodesRecursive, parsePosition } from "../data/utils";
+import type * as Gustav from "../gustav/types";
+import { getNodesRecursive, parsePosition } from "../gustav/utils";
 import { useConfig } from "./useConfig";
 
 type NodeDataProviderProps = {
-  dialogData: DialogData;
+  dialogData: Gustav.DialogData;
   children: React.ReactNode;
 };
 
-function getNodeFromData(data: NodeData): Node {
-  const { x, y } = parsePosition(data.EditorData.position);
+function getNodeFromGustav(
+  gustavNode: Gustav.Node,
+  gustavNodes: Gustav.DialogData["Nodes"]
+): Node {
+  const { x, y } = parsePosition(gustavNode.EditorData.position);
+
+  const isAliased = gustavNode.Constructor === "Alias";
+  const data = {
+    ...(isAliased ? gustavNodes[gustavNode.SourceNode!] : gustavNode),
+    CheckFlags: gustavNode.CheckFlags,
+    SetFlags: gustavNode.SetFlags,
+  };
+
   return {
-    id: data.UUID,
-    type: data.Constructor,
+    id: gustavNode.UUID,
+    type: gustavNode.Constructor,
     position: {
       x: Number(x),
       y: Number(y),
@@ -25,15 +36,15 @@ function getNodeFromData(data: NodeData): Node {
     style: {
       width: "240px",
     },
-    data: data,
+    data,
   };
 }
 
-function getEdgesFromData(data: NodeData): Edge[] {
-  return data.Children.map((child) => {
+function getEdgesFromGustav(gustavNode: Gustav.Node): Edge[] {
+  return gustavNode.Children.map((child) => {
     const edge: Edge = {
-      id: `${data.UUID}-${child}`,
-      source: data.UUID,
+      id: `${gustavNode.UUID}-${child}`,
+      source: gustavNode.UUID,
       target: child,
       type: "smoothstep",
     };
@@ -41,7 +52,7 @@ function getEdgesFromData(data: NodeData): Edge[] {
   });
 }
 
-function useNodeDataState(dialogData: DialogData) {
+function useNodeDataState(dialogData: Gustav.DialogData) {
   const { rootId } = useConfig();
 
   // Node Data
@@ -60,11 +71,11 @@ function useNodeDataState(dialogData: DialogData) {
     [dialogData.Nodes, nodeDataList, rootId]
   );
   const processedNodes: Node[] = useMemo(
-    () => filteredData.map((node) => getNodeFromData(node)),
-    [filteredData]
+    () => filteredData.map((node) => getNodeFromGustav(node, dialogData.Nodes)),
+    [filteredData, dialogData.Nodes]
   );
   const processedEdges: Edge[] = useMemo(
-    () => filteredData.flatMap((node) => getEdgesFromData(node)),
+    () => filteredData.flatMap((node) => getEdgesFromGustav(node)),
     [filteredData]
   );
 

@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
-import { NodeData } from "../data/types";
+import { Node } from "../gustav/types";
 import NodePopover from "./NodePopover";
 import NodeTextList from "./NodeTextList";
 import { useNodeData } from "./useNodeData";
 
-const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
+const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
 
   const category = data.Constructor;

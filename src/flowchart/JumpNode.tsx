@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
-import { NodeData } from "../data/types";
+import { JumpNode } from "../gustav/types";
 
-const JumpNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
+const JumpNode = memo<NodeProps<JumpNode>>(({ data, isConnectable }) => {
   const category = data.Constructor;
 
   return (

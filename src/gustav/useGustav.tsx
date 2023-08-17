@@ -6,13 +6,13 @@ const REMOTE_URL = "https://waldo.team/bg3_dialog/";
 const DEFAULT_PATH =
   "Mods/Gustav/Story/Dialogs/Act1/Chapel/CHA_Crypt_Jergal.json";
 
-type DialogDataProviderProps = {
+type GustavProviderProps = {
   children: React.ReactNode;
 };
 
 const urlParams = new URLSearchParams(window.location.search);
 
-function useDialogDataState() {
+function useGustavState() {
   const [path, setPath] = React.useState<string>(
     urlParams.get("path") ?? DEFAULT_PATH
   );
@@ -33,26 +33,26 @@ function useDialogDataState() {
   };
 }
 
-const DialogDataStateContext = React.createContext<
-  ReturnType<typeof useDialogDataState> | undefined
+const GustavStateContext = React.createContext<
+  ReturnType<typeof useGustavState> | undefined
 >(undefined);
 
-function DialogDataProvider({ children }: DialogDataProviderProps) {
-  const value = useDialogDataState();
+function GustavProvider({ children }: GustavProviderProps) {
+  const value = useGustavState();
 
   return (
-    <DialogDataStateContext.Provider value={value}>
+    <GustavStateContext.Provider value={value}>
       {children}
-    </DialogDataStateContext.Provider>
+    </GustavStateContext.Provider>
   );
 }
 
-function useDialogData() {
-  const context = React.useContext(DialogDataStateContext);
+function useGustav() {
+  const context = React.useContext(GustavStateContext);
   if (context === undefined) {
-    throw new Error("useDialogData must be used within a DialogDataProvider");
+    throw new Error("useGustav must be used within a GustavProvider");
   }
   return context;
 }
 
-export { DialogDataProvider, useDialogData };
+export { GustavProvider, useGustav };

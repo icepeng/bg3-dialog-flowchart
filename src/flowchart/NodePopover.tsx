@@ -1,7 +1,7 @@
-import { NodeData } from "../data/types";
+import { Node } from "../gustav/types";
 
 export interface NodePopoverProps {
-  nodeData: NodeData;
+  nodeData: Node;
 }
 
 const NodePopover: React.FC<NodePopoverProps> = ({ nodeData }) => {

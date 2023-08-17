@@ -7,8 +7,7 @@ import ReactFlow, {
   NodeProps,
   useReactFlow,
 } from "reactflow";
-import { NodeData } from "../data/types";
-import AliasNode from "./AliasNode";
+import type * as Gustav from "../gustav/types";
 import CinematicNode from "./CinematicNode";
 import DialogNode from "./DialogNode";
 import JumpNode from "./JumpNode";
@@ -18,11 +17,11 @@ import { useConfig } from "./useConfig";
 import { useNodeData } from "./useNodeData";
 
 const nodeTypes: Record<
-  NodeData["Constructor"],
+  Gustav.Node["Constructor"],
   React.NamedExoticComponent<NodeProps>
 > = {
   Jump: JumpNode,
-  Alias: AliasNode,
+  Alias: DialogNode,
   TagAnswer: DialogNode,
   TagQuestion: DialogNode,
   TagGreeting: DialogNode,
@@ -48,7 +47,7 @@ function Flowchart() {
   }, [rootId, fitView]);
 
   const onNodeClick = useCallback(
-    (_: React.MouseEvent, node: Node<NodeData>) => {
+    (_: React.MouseEvent, node: Node<Gustav.Node>) => {
       if (node.data.Constructor === "Jump") {
         const targetId = node.data.JumpTarget!;
         fitView({ nodes: [{ id: targetId }] });

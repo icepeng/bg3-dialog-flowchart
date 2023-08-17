@@ -1,11 +1,12 @@
 import * as React from "react";
-import { TagText, TranslationData, TranslationUnit } from "./types";
-import { useDialogData } from "./useDialogData";
+import { TagText } from "../gustav/types";
+import { useGustav } from "../gustav/useGustav";
+import { TranslationData, TranslationUnit } from "./types";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";
 const TRANSLATE_PAGE_URL = "https://waldo.team/translate/bg3";
 
-type TranslationDataProviderProps = {
+type WeblateProviderProps = {
   children: React.ReactNode;
 };
 
@@ -21,8 +22,8 @@ const convertToTranslationData = (
   return translationData;
 };
 
-function useTranslationDataState() {
-  const { path } = useDialogData();
+function useWeblateState() {
+  const { path } = useGustav();
 
   const [apiToken, setApiToken] = React.useState<string>(
     localStorage.getItem("apiToken") || ""
@@ -76,28 +77,26 @@ function useTranslationDataState() {
   };
 }
 
-const TranslationDataStateContext = React.createContext<
-  ReturnType<typeof useTranslationDataState> | undefined
+const WeblateStateContext = React.createContext<
+  ReturnType<typeof useWeblateState> | undefined
 >(undefined);
 
-function TranslationDataProvider({ children }: TranslationDataProviderProps) {
-  const value = useTranslationDataState();
+function WeblateProvider({ children }: WeblateProviderProps) {
+  const value = useWeblateState();
 
   return (
-    <TranslationDataStateContext.Provider value={value}>
+    <WeblateStateContext.Provider value={value}>
       {children}
-    </TranslationDataStateContext.Provider>
+    </WeblateStateContext.Provider>
   );
 }
 
-function useTranslationData() {
-  const context = React.useContext(TranslationDataStateContext);
+function useWeblate() {
+  const context = React.useContext(WeblateStateContext);
   if (context === undefined) {
-    throw new Error(
-      "useTranslationData must be used within a TranslationDataProvider"
-    );
+    throw new Error("useWeblate must be used within a WeblateProvider");
   }
   return context;
 }
 
-export { TranslationDataProvider, useTranslationData };
+export { WeblateProvider, useWeblate };

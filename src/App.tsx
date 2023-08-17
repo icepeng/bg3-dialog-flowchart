@@ -14,17 +14,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { DialogDataProvider, useDialogData } from "./data/useDialogData";
-import {
-  TranslationDataProvider,
-  useTranslationData,
-} from "./data/useTranslationData";
 import Workspace from "./flowchart/Workspace";
+import { GustavProvider, useGustav } from "./gustav/useGustav";
 import theme from "./theme";
+import { WeblateProvider, useWeblate } from "./weblate/useWeblate";
 
 function PathSelector() {
-  const { path, setPath } = useDialogData();
-  const { apiToken, setApiToken } = useTranslationData();
+  const { path, setPath } = useGustav();
+  const { apiToken, setApiToken } = useWeblate();
   const [value, setValue] = useState(path);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -91,14 +88,14 @@ function App() {
       theme={theme}
       resetCSS
     >
-      <DialogDataProvider>
-        <TranslationDataProvider>
+      <GustavProvider>
+        <WeblateProvider>
           <Flex direction={"column"} height={"100vh"} width={"100vw"}>
             <PathSelector />
             <Workspace />
           </Flex>
-        </TranslationDataProvider>
-      </DialogDataProvider>
+        </WeblateProvider>
+      </GustavProvider>
     </ChakraProvider>
   );
 }
