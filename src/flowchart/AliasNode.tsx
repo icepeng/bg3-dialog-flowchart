@@ -9,9 +9,9 @@ const AliasNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
   const { dialogData, getSpeakerName } = useNodeData();
 
   const category = data.Constructor;
-  const sourceNodeData = dialogData.Nodes[data.SourceNode!];
 
-  const speakerName = getSpeakerName(data.SpeakerNo);
+  const sourceNodeData = dialogData.Nodes[data.SourceNode!];
+  const speakerName = getSpeakerName(sourceNodeData.SpeakerNo);
   const checkFlags = data.CheckFlags;
   const hasFlags = checkFlags.length > 0;
 
