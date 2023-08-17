@@ -113,11 +113,16 @@ export interface RollResultNodeData extends BaseNodeData {
   RollSuccess: boolean;
 }
 
+export interface CinematicNodeData extends BaseNodeData {
+  Constructor: "TagCinematic";
+}
+
 export type NodeData =
   | BaseNodeData
   | JumpNodeData
   | RollNodeData
-  | RollResultNodeData;
+  | RollResultNodeData
+  | CinematicNodeData;
 
 interface SpeakerCharacter {
   DisplayName: string;

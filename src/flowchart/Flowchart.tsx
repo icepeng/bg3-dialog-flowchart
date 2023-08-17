@@ -9,6 +9,7 @@ import ReactFlow, {
 } from "reactflow";
 import { NodeData } from "../data/types";
 import AliasNode from "./AliasNode";
+import CinematicNode from "./CinematicNode";
 import DialogNode from "./DialogNode";
 import JumpNode from "./JumpNode";
 import RollNode from "./RollNode";
@@ -31,7 +32,7 @@ const nodeTypes: Record<
   ActiveRoll: RollNode,
   FallibleQuestionResult: DialogNode,
   PassiveRoll: RollNode,
-  TagCinematic: DialogNode,
+  TagCinematic: CinematicNode,
   Trade: DialogNode,
   VisualState: DialogNode,
 };
