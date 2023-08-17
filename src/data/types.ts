@@ -64,7 +64,7 @@ interface FlagGroup {
   Type: "Global" | "Tag" | "Object" | "Dialog";
 }
 
-export interface NodeData {
+export interface BaseNodeData {
   SourceNode?: string;
   JumpTarget?: string;
   UUID: string;
@@ -94,6 +94,21 @@ export interface NodeData {
   TaggedTextList: TaggedText[];
   EditorData: EditorData;
 }
+
+export interface JumpNodeData extends BaseNodeData {
+  Constructor: "Jump";
+  SourceNode: string;
+  JumpTarget: string;
+}
+
+export interface PassiveRollNodeData extends BaseNodeData {
+  Constructor: "PassiveRoll";
+  RollAbility: string;
+  RollAdvantage: number;
+  RollType: "SkillCheck" | "RawAbility";
+}
+
+export type NodeData = BaseNodeData | JumpNodeData | PassiveRollNodeData;
 
 interface SpeakerCharacter {
   DisplayName: string;
@@ -135,4 +150,4 @@ export interface TranslationUnit {
 
 export type TranslationData = {
   [context: string]: TranslationUnit;
-}
+};

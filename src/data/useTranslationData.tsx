@@ -1,8 +1,9 @@
 import * as React from "react";
-import { TranslationData, TranslationUnit } from "./types";
+import { TagText, TranslationData, TranslationUnit } from "./types";
 import { useDialogData } from "./useDialogData";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";
+const TRANSLATE_PAGE_URL = "https://waldo.team/translate/bg3";
 
 type TranslationDataProviderProps = {
   children: React.ReactNode;
@@ -50,10 +51,33 @@ function useTranslationDataState() {
     localStorage.setItem("apiToken", apiToken);
   }, [apiToken]);
 
+  function getTranslatedText(tagText: TagText) {
+    const unit = translationData?.[tagText.Text.Handle];
+    if (unit) {
+      const url = `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
+      const content = unit.target ? (
+        <>
+          {" "}
+          {tagText.Text.Value} <br /> {unit.target}{" "}
+        </>
+      ) : (
+        tagText.Text.Value
+      );
+      return (
+        <a href={url} target="_blank">
+          {content}
+        </a>
+      );
+    }
+
+    return tagText.Text.Value;
+  }
+
   return {
     translationData,
     apiToken,
     setApiToken,
+    getTranslatedText,
   };
 }
 
