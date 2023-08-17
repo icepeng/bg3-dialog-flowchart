@@ -1,11 +1,13 @@
 import { Divider, VStack } from "@chakra-ui/react";
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
-import { NodeData } from "../data/types";
+import { NodeData, TagText } from "../data/types";
 import { useNodeData } from "./useNodeData";
+import { useTranslationData } from "../data/useTranslationData";
 
 const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
+  const { translationData } = useTranslationData();
 
   const category = data.Constructor;
   const uuid = data.UUID;
@@ -13,6 +15,17 @@ const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
   const checkFlags = data.CheckFlags;
   const hasFlags = checkFlags.length > 0;
   const isEndNode = data.EndNode;
+
+  function GetTranslatedText(tagText: TagText) {
+    const unit = translationData?.[tagText.Text.Handle];
+    if (unit) {
+      const translatePageUrl = `https://waldo.team/translate/bg3/${unit.component}/ko/?offset=${unit.position}`;
+      const content = unit.target ? <> {tagText.Text.Value} <br/> {unit.target} </> : tagText.Text.Value;
+      return <a href={translatePageUrl} target="_blank">{content}</a>;
+    }
+
+    return tagText.Text.Value;
+  }
 
   return (
     <>
@@ -30,7 +43,7 @@ const DialogNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
           <VStack divider={<Divider />} key={i}>
             {TaggedText.TagTexts.map((TagText) => (
               <div key={TagText.LineId}>
-                {speakerName}: {TagText.Text.Value}
+                {speakerName}: {GetTranslatedText(TagText)}
               </div>
             ))}
           </VStack>

@@ -38,7 +38,7 @@ interface RuleGroup {
   Rules: Rule[];
 }
 
-interface TagText {
+export interface TagText {
   LineId: string;
   Text: {
     Handle: string;
@@ -59,7 +59,7 @@ interface Flag {
   Name: string;
 }
 
-interface CheckOrSetFlag {
+interface FlagGroup {
   Flags: Flag[];
   Type: "Global" | "Tag" | "Object" | "Dialog";
 }
@@ -89,8 +89,8 @@ export interface NodeData {
   SpeakerNo: -1 | 0 | 1;
   AddressedSpeaker: 0;
   Children: string[];
-  CheckFlags: CheckOrSetFlag[];
-  SetFlags: CheckOrSetFlag[];
+  CheckFlags: FlagGroup[];
+  SetFlags: FlagGroup[];
   TaggedTextList: TaggedText[];
   EditorData: EditorData;
 }
@@ -120,4 +120,19 @@ export interface DialogData {
   RootNodes: string[];
   Nodes: Record<string, NodeData>;
   SpeakerDict: Record<string, Speaker>;
+}
+
+export interface TranslationUnit {
+  id: number;
+  position: number;
+  context: string;
+  source: string;
+  target: string;
+  fuzzy: boolean;
+  approved: boolean;
+  component: string;
+}
+
+export type TranslationData = {
+  [context: string]: TranslationUnit;
 }
