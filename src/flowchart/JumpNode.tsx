@@ -4,7 +4,6 @@ import { NodeData } from "../data/types";
 
 const JumpNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
   const category = data.Constructor;
-  const uuid = data.UUID;
 
   return (
     <>
@@ -14,7 +13,6 @@ const JumpNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
         isConnectable={isConnectable}
       />
       <div>[{category}]</div>
-      <div>{uuid}</div>
       <div>클릭해서 점프</div>
       <Handle
         type="source"

@@ -1,19 +1,17 @@
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
-import { NodeData } from "../data/types";
+import { RollNodeData } from "../data/types";
 import NodePopover from "./NodePopover";
 import NodeTextList from "./NodeTextList";
 import { useNodeData } from "./useNodeData";
 
-const AliasNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
-  const { dialogData, getSpeakerName } = useNodeData();
+const RollNode = memo<NodeProps<RollNodeData>>(({ data, isConnectable }) => {
+  const { getSpeakerName } = useNodeData();
 
   const category = data.Constructor;
-  const sourceNodeData = dialogData.Nodes[data.SourceNode!];
-
-  const speakerName = getSpeakerName(data.SpeakerNo);
   const checkFlags = data.CheckFlags;
   const hasFlags = checkFlags.length > 0;
+  const speakerName = getSpeakerName(data.SpeakerNo);
 
   return (
     <>
@@ -24,19 +22,22 @@ const AliasNode = memo<NodeProps<NodeData>>(({ data, isConnectable }) => {
       />
       {hasFlags && "(Flag Check)"}
       <div>
+        {data.RollType}: {data.RollAbility}
+      </div>
+      <div>
         [{category}] <span>{speakerName}:</span>
       </div>
-      <NodeTextList nodeData={sourceNodeData} />
+      <NodeTextList nodeData={data} />
       <Handle
         type="source"
         position={Position.Right}
         isConnectable={isConnectable}
       />
       <NodeToolbar>
-        <NodePopover nodeData={sourceNodeData} />
+        <NodePopover nodeData={data} />
       </NodeToolbar>
     </>
   );
 });
 
-export default AliasNode;
+export default RollNode;

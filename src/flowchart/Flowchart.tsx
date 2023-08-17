@@ -11,6 +11,8 @@ import { NodeData } from "../data/types";
 import AliasNode from "./AliasNode";
 import DialogNode from "./DialogNode";
 import JumpNode from "./JumpNode";
+import RollNode from "./RollNode";
+import RollResultNode from "./RollResultNode";
 import { useConfig } from "./useConfig";
 import { useNodeData } from "./useNodeData";
 
@@ -24,11 +26,11 @@ const nodeTypes: Record<
   TagQuestion: DialogNode,
   TagGreeting: DialogNode,
   "Nested Dialog": DialogNode,
-  RollResult: DialogNode,
+  RollResult: RollResultNode,
   Pop: DialogNode,
-  ActiveRoll: DialogNode,
+  ActiveRoll: RollNode,
   FallibleQuestionResult: DialogNode,
-  PassiveRoll: DialogNode,
+  PassiveRoll: RollNode,
   TagCinematic: DialogNode,
   Trade: DialogNode,
   VisualState: DialogNode,

@@ -51,32 +51,27 @@ function useTranslationDataState() {
     localStorage.setItem("apiToken", apiToken);
   }, [apiToken]);
 
+  function getWeblateUrl(tagText: TagText) {
+    const unit = translationData?.[tagText.Text.Handle];
+    if (unit) {
+      return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
+    }
+    return undefined;
+  }
+
   function getTranslatedText(tagText: TagText) {
     const unit = translationData?.[tagText.Text.Handle];
     if (unit) {
-      const url = `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
-      const content = unit.target ? (
-        <>
-          {" "}
-          {tagText.Text.Value} <br /> {unit.target}{" "}
-        </>
-      ) : (
-        tagText.Text.Value
-      );
-      return (
-        <a href={url} target="_blank">
-          {content}
-        </a>
-      );
+      return unit.target;
     }
-
-    return tagText.Text.Value;
+    return undefined;
   }
 
   return {
     translationData,
     apiToken,
     setApiToken,
+    getWeblateUrl,
     getTranslatedText,
   };
 }

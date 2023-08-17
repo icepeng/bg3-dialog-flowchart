@@ -46,7 +46,7 @@ export interface TagText {
   };
 }
 
-interface TaggedText {
+export interface TaggedText {
   HasTagRule: boolean;
   RuleGroup: RuleGroup;
   TagTexts: TagText[];
@@ -101,14 +101,23 @@ export interface JumpNodeData extends BaseNodeData {
   JumpTarget: string;
 }
 
-export interface PassiveRollNodeData extends BaseNodeData {
-  Constructor: "PassiveRoll";
+export interface RollNodeData extends BaseNodeData {
+  Constructor: "PassiveRoll" | "ActiveRoll";
   RollAbility: string;
   RollAdvantage: number;
   RollType: "SkillCheck" | "RawAbility";
 }
 
-export type NodeData = BaseNodeData | JumpNodeData | PassiveRollNodeData;
+export interface RollResultNodeData extends BaseNodeData {
+  Constructor: "RollResult";
+  RollSuccess: boolean;
+}
+
+export type NodeData =
+  | BaseNodeData
+  | JumpNodeData
+  | RollNodeData
+  | RollResultNodeData;
 
 interface SpeakerCharacter {
   DisplayName: string;
