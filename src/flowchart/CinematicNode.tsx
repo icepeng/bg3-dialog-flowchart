@@ -1,6 +1,7 @@
 import { memo } from "react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
 import { CinematicNode } from "../gustav/types";
+import NodePopover from "./NodePopover";
 
 const CinematicNode = memo<NodeProps<CinematicNode>>(
   ({ data, isConnectable }) => {
@@ -21,6 +22,9 @@ const CinematicNode = memo<NodeProps<CinematicNode>>(
           position={Position.Right}
           isConnectable={isConnectable}
         />
+        <NodeToolbar>
+          <NodePopover nodeData={data} />
+        </NodeToolbar>
       </>
     );
   }
