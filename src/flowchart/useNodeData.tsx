@@ -2,7 +2,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { Edge, Node, Position } from "reactflow";
 import { DialogData, NodeData } from "../data/types";
-import { getAllFlags, getNodesRecursive, parsePosition } from "../data/utils";
+import { getNodesRecursive, parsePosition } from "../data/utils";
 import { useConfig } from "./useConfig";
 
 type NodeDataProviderProps = {
@@ -54,9 +54,6 @@ function useNodeDataState(dialogData: DialogData) {
     [dialogData]
   );
 
-  // Flags
-  const flags = React.useMemo(() => getAllFlags(nodeDataList), [nodeDataList]);
-
   // Flowchart
   const filteredData = useMemo(
     () => (rootId ? getNodesRecursive(dialogData.Nodes, rootId) : nodeDataList),
@@ -87,7 +84,6 @@ function useNodeDataState(dialogData: DialogData) {
   return {
     dialogData,
     rootNodes,
-    flags,
     processedNodes,
     processedEdges,
     getSpeakerName,

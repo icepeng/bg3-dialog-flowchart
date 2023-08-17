@@ -10,30 +10,14 @@ function useConfigState() {
   const { path } = useDialogData();
 
   const [rootId, setRootId] = useState<string>();
-  const [flagRecord, setFlagRecord] = useState<Record<string, boolean>>({});
 
   React.useEffect(() => {
     setRootId(undefined);
-    setFlagRecord({});
   }, [path]);
-
-  function setAllFlags(value: boolean) {
-    setFlagRecord((prev) =>
-      Object.fromEntries(Object.keys(prev).map((key) => [key, value]))
-    );
-  }
-
-  function setFlag(uuid: string, value: boolean) {
-    setFlagRecord((prev) => ({ ...prev, [uuid]: value }));
-  }
 
   return {
     rootId,
     setRootId,
-    flagRecord,
-    setFlagRecord,
-    setFlag,
-    setAllFlags,
   };
 }
 

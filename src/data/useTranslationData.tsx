@@ -8,13 +8,13 @@ type TranslationDataProviderProps = {
   children: React.ReactNode;
 };
 
-const API_TOKEN: string = "";
-
-const convertToTranslationData = (jsonData: Array<TranslationUnit>): TranslationData => {
-  const translationData: TranslationData = { };
+const convertToTranslationData = (
+  jsonData: Array<TranslationUnit>
+): TranslationData => {
+  const translationData: TranslationData = {};
 
   jsonData.forEach((item) => {
-      translationData[item.context] = item;
+    translationData[item.context] = item;
   });
 
   return translationData;
@@ -23,26 +23,37 @@ const convertToTranslationData = (jsonData: Array<TranslationUnit>): Translation
 function useTranslationDataState() {
   const { path } = useDialogData();
 
-  const [translationData, setTranslationData] = React.useState<TranslationData>();
+  const [apiToken, setApiToken] = React.useState<string>(
+    localStorage.getItem("apiToken") || ""
+  );
+  const [translationData, setTranslationData] =
+    React.useState<TranslationData>();
 
   React.useEffect(() => {
-    if (path !== undefined && API_TOKEN) {
+    if (path !== undefined && apiToken) {
       fetch(REMOTE_API_URL, {
-        method: "POST", 
-        mode: "cors", 
-        headers: { 
-          "Authorization": "Token " + API_TOKEN,
-          'Content-Type': 'application/json'
+        method: "POST",
+        mode: "cors",
+        headers: {
+          Authorization: "Token " + apiToken,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({dialog: path})
-      }).then((response) => response.json())
+        body: JSON.stringify({ dialog: path }),
+      })
+        .then((response) => response.json())
         .then((data: Array<TranslationUnit>) => convertToTranslationData(data))
         .then((data: TranslationData) => setTranslationData(data));
     }
-  }, [path]);
+  }, [path, apiToken]);
+
+  React.useEffect(() => {
+    localStorage.setItem("apiToken", apiToken);
+  }, [apiToken]);
 
   return {
     translationData,
+    apiToken,
+    setApiToken,
   };
 }
 
@@ -63,7 +74,9 @@ function TranslationDataProvider({ children }: TranslationDataProviderProps) {
 function useTranslationData() {
   const context = React.useContext(TranslationDataStateContext);
   if (context === undefined) {
-    throw new Error("useTranslationData must be used within a TranslationDataProvider");
+    throw new Error(
+      "useTranslationData must be used within a TranslationDataProvider"
+    );
   }
   return context;
 }

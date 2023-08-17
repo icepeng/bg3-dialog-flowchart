@@ -1,20 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  HStack,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Select,
-  Stack,
-  VStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, HStack, Input, Select, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useReactFlow } from "reactflow";
 import { useConfig } from "./useConfig";
@@ -23,11 +7,10 @@ import { useNodeData } from "./useNodeData";
 const urlParams = new URLSearchParams(window.location.search);
 
 function Config() {
-  const { rootNodes, flags } = useNodeData();
-  const { rootId, setRootId, setFlag, setAllFlags, flagRecord } = useConfig();
+  const { rootNodes } = useNodeData();
+  const { rootId, setRootId } = useConfig();
   const { fitView } = useReactFlow();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [nodeSearchId, setNodeSearchId] = useState<string>("");
 
   // get query param from router to set initial nodeSearchId
@@ -45,53 +28,14 @@ function Config() {
 
   return (
     <Stack direction="column" gap={0}>
-      <HStack>
-        <Select value={rootId} onChange={(e) => setRootId(e.target.value)}>
-          <option value={""}>Select a root node</option>
-          {rootNodes.map((node) => (
-            <option key={node.UUID} value={node.UUID}>
-              {node.EditorData.logicalname}
-            </option>
-          ))}
-        </Select>
-        <Button onClick={onOpen}>Configure Flags</Button>
-        <Modal
-          size={"2xl"}
-          isOpen={isOpen}
-          onClose={onClose}
-          scrollBehavior="inside"
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Flag Settings</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <VStack align="start">
-                <div>
-                  <Button onClick={() => setAllFlags(true)}>Select All</Button>
-                  <Button onClick={() => setAllFlags(false)}>
-                    Deselect All
-                  </Button>
-                </div>
-                {flags.map((flag) => (
-                  <Checkbox
-                    key={flag.UUID}
-                    isChecked={flagRecord[flag.UUID]}
-                    onChange={(e) =>
-                      setFlag(flag.UUID, e.currentTarget.checked)
-                    }
-                  >
-                    {flag.Name}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </ModalBody>
-            <ModalFooter>
-              <Button onClick={onClose}>Close</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </HStack>
+      <Select value={rootId} onChange={(e) => setRootId(e.target.value)}>
+        <option value={""}>Select a root node</option>
+        {rootNodes.map((node) => (
+          <option key={node.UUID} value={node.UUID}>
+            {node.EditorData.logicalname}
+          </option>
+        ))}
+      </Select>
       <HStack>
         <Input
           value={nodeSearchId}
