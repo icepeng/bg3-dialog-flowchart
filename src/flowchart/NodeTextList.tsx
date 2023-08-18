@@ -1,6 +1,11 @@
 import { Divider, VStack, chakra } from "@chakra-ui/react";
-import { Node, TagText } from "../gustav/types";
+import { Node, RuleGroup, TagText } from "../gustav/types";
 import { useWeblate } from "../weblate/useWeblate";
+
+function stringifyRuleGroup(ruleGroup: RuleGroup) {
+  const { Rules } = ruleGroup;
+  return Rules.map((rule) => rule.TagNames.join(",")).join(" & ");
+}
 
 interface NodeTextListProps {
   nodeData: Node;
@@ -11,13 +16,19 @@ const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
 
   return (
     <VStack divider={<Divider borderWidth={2} />}>
-      {nodeData.TaggedTextList.map((TaggedText, i) => (
-        <VStack divider={<Divider />} key={i}>
-          {TaggedText.TagTexts.map((TagText) => (
-            <NodeText key={TagText.LineId} TagText={TagText} />
-          ))}
-        </VStack>
-      ))}
+      {nodeData.TaggedTextList.map((TaggedText, i) => {
+        const hasRule = TaggedText.HasTagRule;
+        return (
+          <>
+            {hasRule && <div>({stringifyRuleGroup(TaggedText.RuleGroup)})</div>}
+            <VStack divider={<Divider />} key={i}>
+              {TaggedText.TagTexts.map((TagText) => (
+                <NodeText key={TagText.LineId} TagText={TagText} />
+              ))}
+            </VStack>
+          </>
+        );
+      })}
       {isEndNode && <div>{"<대화 종료>"}</div>}
     </VStack>
   );

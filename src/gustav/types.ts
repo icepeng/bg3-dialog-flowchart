@@ -26,14 +26,14 @@ interface EditorData {
   VFXTags?: string;
 }
 
-interface Rule {
+export interface Rule {
   HasChildRules: boolean;
   TagCombineOp: 0 | 2;
   Tags: string[];
   TagNames: string[];
 }
 
-interface RuleGroup {
+export interface RuleGroup {
   TagCombineOp: 0 | 2;
   Rules: Rule[];
 }
