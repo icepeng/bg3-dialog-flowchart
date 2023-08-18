@@ -13,6 +13,7 @@ import DialogNode from "./DialogNode";
 import JumpNode from "./JumpNode";
 import RollNode from "./RollNode";
 import RollResultNode from "./RollResultNode";
+import VisualStateNode from "./VisualStateNode";
 import { useConfig } from "./useConfig";
 import { useNodeData } from "./useNodeData";
 
@@ -33,7 +34,7 @@ const nodeTypes: Record<
   PassiveRoll: RollNode,
   TagCinematic: CinematicNode,
   Trade: DialogNode,
-  VisualState: DialogNode,
+  "Visual State": VisualStateNode,
 };
 
 function Flowchart() {

@@ -24,6 +24,7 @@ interface EditorData {
   SFXTags?: string;
   StateChangeTags?: string;
   VFXTags?: string;
+  stateContext?: string;
 }
 
 export interface Rule {
@@ -78,7 +79,7 @@ export interface BaseNode {
     | "RollResult"
     | "ActiveRoll"
     | "PassiveRoll"
-    | "VisualState"
+    | "Visual State"
     | "Trade"
     | "Pop"
     | "FallibleQuestionResult"
@@ -115,6 +116,10 @@ export interface RollResultNode extends BaseNode {
 
 export interface CinematicNode extends BaseNode {
   Constructor: "TagCinematic";
+}
+
+export interface VisualStateNode extends BaseNode {
+  Constructor: "Visual State";
 }
 
 export type Node =
