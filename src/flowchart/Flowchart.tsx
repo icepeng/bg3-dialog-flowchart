@@ -39,12 +39,14 @@ const nodeTypes: Record<
 function Flowchart() {
   const { rootId } = useConfig();
   const { processedNodes, processedEdges } = useNodeData();
-  const { fitView } = useReactFlow();
+  const { fitView, setNodes, setEdges } = useReactFlow();
 
   useEffect(() => {
     if (!rootId) return;
+    setNodes(processedNodes);
+    setEdges(processedEdges);
     setTimeout(() => fitView({ nodes: [{ id: rootId }] }), 0);
-  }, [rootId, fitView]);
+  }, [rootId, processedNodes, processedEdges, setNodes, setEdges, fitView]);
 
   const onNodeClick = useCallback(
     (_: React.MouseEvent, node: Node<Gustav.Node>) => {
@@ -58,8 +60,8 @@ function Flowchart() {
 
   return (
     <ReactFlow
-      nodes={processedNodes}
-      edges={processedEdges}
+      defaultNodes={processedNodes}
+      defaultEdges={processedEdges}
       nodeTypes={nodeTypes}
       onNodeClick={onNodeClick}
       attributionPosition="bottom-left"
