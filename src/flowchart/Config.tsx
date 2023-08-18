@@ -1,4 +1,4 @@
-import { Button, HStack, Input, Select, Stack } from "@chakra-ui/react";
+import { Button, HStack, Input, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useReactFlow } from "reactflow";
 import { useConfig } from "./useConfig";
@@ -27,16 +27,20 @@ function Config() {
   }
 
   return (
-    <Stack direction="column" gap={0}>
-      <Select value={rootId} onChange={(e) => setRootId(e.target.value)}>
+    <HStack>
+      <Select
+        flex={1}
+        value={rootId}
+        onChange={(e) => setRootId(e.target.value)}
+      >
         <option value={""}>Select a root node</option>
         {rootNodes.map((node) => (
           <option key={node.UUID} value={node.UUID}>
-            {node.EditorData.logicalname}
+            {node.EditorData.logicalname} ({node.UUID})
           </option>
         ))}
       </Select>
-      <HStack>
+      <HStack flex={1}>
         <Input
           value={nodeSearchId}
           onChange={(e) => setNodeSearchId(e.currentTarget.value)}
@@ -44,7 +48,7 @@ function Config() {
         />
         <Button onClick={searchNode}>Find</Button>
       </HStack>
-    </Stack>
+    </HStack>
   );
 }
 
