@@ -25,7 +25,7 @@ function getNodeFromGustav(
 
   return {
     id: gustavNode.UUID,
-    type: gustavNode.Constructor,
+    type: data.Constructor,
     position: {
       x: Number(x),
       y: Number(y),

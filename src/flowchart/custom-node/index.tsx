@@ -1,5 +1,6 @@
-import { NodeProps } from "reactflow";
 import type * as Gustav from "@gustav/types";
+import { NodeProps } from "reactflow";
+import AliasNode from "./AliasNode";
 import CinematicNode from "./CinematicNode";
 import DialogNode from "./DialogNode";
 import JumpNode from "./JumpNode";
@@ -12,7 +13,7 @@ export const nodeTypes: Record<
   React.NamedExoticComponent<NodeProps>
 > = {
   Jump: JumpNode,
-  Alias: DialogNode,
+  Alias: AliasNode,
   TagAnswer: DialogNode,
   TagQuestion: DialogNode,
   TagGreeting: DialogNode,
