@@ -11,6 +11,8 @@ function useWorkspaceState() {
 
   const [rootId, setRootId] = useState<string>();
   const [selectedId, setSelectedId] = useState<string>();
+  const [highlightUntranslated, setHighlightUntranslated] =
+    useState<boolean>(false);
 
   React.useEffect(() => {
     setRootId(undefined);
@@ -21,6 +23,8 @@ function useWorkspaceState() {
     setRootId,
     selectedId,
     setSelectedId,
+    highlightUntranslated,
+    setHighlightUntranslated,
   };
 }
 

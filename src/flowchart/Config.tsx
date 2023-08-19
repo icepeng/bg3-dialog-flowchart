@@ -1,4 +1,4 @@
-import { Button, HStack, Input, Select } from "@chakra-ui/react";
+import { Button, HStack, Input, Select, Switch } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useReactFlow } from "reactflow";
 import { useWorkspace } from "./useWorkspace";
@@ -8,7 +8,8 @@ const urlParams = new URLSearchParams(window.location.search);
 
 function Config() {
   const { rootNodes } = useNodeData();
-  const { rootId, setRootId } = useWorkspace();
+  const { rootId, setRootId, highlightUntranslated, setHighlightUntranslated } =
+    useWorkspace();
   const { fitView } = useReactFlow();
 
   const [nodeSearchId, setNodeSearchId] = useState<string>("");
@@ -48,6 +49,12 @@ function Config() {
         />
         <Button onClick={searchNode}>Find</Button>
       </HStack>
+      <Switch
+        checked={highlightUntranslated}
+        onChange={(e) => setHighlightUntranslated(e.target.checked)}
+      >
+        미번역 강조
+      </Switch>
     </HStack>
   );
 }

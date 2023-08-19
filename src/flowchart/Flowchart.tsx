@@ -18,10 +18,13 @@ function Flowchart() {
 
   useEffect(() => {
     if (!rootId) return;
+    setTimeout(() => fitView({ nodes: [{ id: rootId }] }), 0);
+  }, [rootId, fitView]);
+
+  useEffect(() => {
     setNodes(processedNodes);
     setEdges(processedEdges);
-    setTimeout(() => fitView({ nodes: [{ id: rootId }] }), 0);
-  }, [rootId, processedNodes, processedEdges, setNodes, setEdges, fitView]);
+  }, [processedNodes, processedEdges, setNodes, setEdges]);
 
   const onNodeClick = useCallback(
     (_: React.MouseEvent, node: Node<Gustav.Node>) => {

@@ -1,7 +1,8 @@
 import * as React from "react";
-import { TagText } from "@gustav/types";
+import * as Gustav from "@gustav/types";
 import { useGustav } from "@gustav/useGustav";
 import { TranslationData, TranslationUnit } from "./types";
+import { useCallback } from "react";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";
 const TRANSLATE_PAGE_URL = "https://waldo.team/translate/bg3";
@@ -77,7 +78,7 @@ function useWeblateState() {
     localStorage.setItem("apiToken", apiToken);
   }, [apiToken]);
 
-  function getWeblateUrl(tagText: TagText) {
+  function getWeblateUrl(tagText: Gustav.TagText) {
     const unit = translationData?.[tagText.Text.Handle];
     if (unit) {
       return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
@@ -85,13 +86,29 @@ function useWeblateState() {
     return undefined;
   }
 
-  function getTranslatedText(tagText: TagText) {
-    const unit = translationData?.[tagText.Text.Handle];
-    if (unit) {
-      return unit.target;
-    }
-    return undefined;
-  }
+  const getTranslatedText = useCallback(
+    (tagText: Gustav.TagText) => {
+      const unit = translationData?.[tagText.Text.Handle];
+      if (unit) {
+        return unit.target;
+      }
+      return undefined;
+    },
+    [translationData]
+  );
+
+  const checkNodeTranslated = useCallback(
+    (node: Gustav.Node) => {
+      if (!translationData) {
+        return true;
+      }
+
+      return !node.TaggedTextList.flatMap((taggedText) =>
+        taggedText.TagTexts.map(getTranslatedText)
+      ).includes("");
+    },
+    [translationData, getTranslatedText]
+  );
 
   return {
     translationData,
@@ -100,6 +117,7 @@ function useWeblateState() {
     setApiToken,
     getWeblateUrl,
     getTranslatedText,
+    checkNodeTranslated,
     loadTranslationData,
   };
 }

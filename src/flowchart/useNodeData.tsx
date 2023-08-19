@@ -4,6 +4,7 @@ import { Edge, Node, Position } from "reactflow";
 import type * as Gustav from "@gustav/types";
 import { getNodesRecursive, parsePosition } from "@gustav/utils";
 import { useWorkspace } from "./useWorkspace";
+import { useWeblate } from "@/weblate/useWeblate";
 
 type NodeDataProviderProps = {
   dialogData: Gustav.DialogData;
@@ -12,7 +13,8 @@ type NodeDataProviderProps = {
 
 function getNodeFromGustav(
   gustavNode: Gustav.Node,
-  gustavNodes: Gustav.DialogData["Nodes"]
+  gustavNodes: Gustav.DialogData["Nodes"],
+  isTranslated: boolean
 ): Node {
   const { x, y } = parsePosition(gustavNode.EditorData.position);
 
@@ -32,7 +34,9 @@ function getNodeFromGustav(
     },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    className: "react-flow__node-default",
+    className: isTranslated
+      ? "react-flow__node-default"
+      : "react-flow__node-default react-flow__node-untranslated",
     style: {
       width: "240px",
     },
@@ -53,14 +57,15 @@ function getEdgesFromGustav(gustavNode: Gustav.Node): Edge[] {
 }
 
 function useNodeDataState(dialogData: Gustav.DialogData) {
-  const { rootId } = useWorkspace();
+  const { rootId, highlightUntranslated } = useWorkspace();
+  const { checkNodeTranslated } = useWeblate();
 
   // Node Data
-  const nodeDataList = React.useMemo(
+  const nodeDataList = useMemo(
     () => Object.values(dialogData.Nodes),
     [dialogData]
   );
-  const rootNodes = React.useMemo(
+  const rootNodes = useMemo(
     () => dialogData.RootNodes.map((id) => dialogData.Nodes[id]),
     [dialogData]
   );
@@ -71,8 +76,15 @@ function useNodeDataState(dialogData: Gustav.DialogData) {
     [dialogData.Nodes, nodeDataList, rootId]
   );
   const processedNodes: Node[] = useMemo(
-    () => filteredData.map((node) => getNodeFromGustav(node, dialogData.Nodes)),
-    [filteredData, dialogData.Nodes]
+    () =>
+      filteredData.map((node) =>
+        getNodeFromGustav(
+          node,
+          dialogData.Nodes,
+          highlightUntranslated ? checkNodeTranslated(node) : true
+        )
+      ),
+    [filteredData, dialogData.Nodes, checkNodeTranslated, highlightUntranslated]
   );
   const processedEdges: Edge[] = useMemo(
     () => filteredData.flatMap((node) => getEdgesFromGustav(node)),

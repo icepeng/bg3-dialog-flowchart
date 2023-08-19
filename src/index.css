@@ -8,6 +8,10 @@
   border-color: #888;
 }
 
+.react-flow__node-untranslated:not(#\#) {
+  background-color: #ba2526;
+}
+
 .react-flow__minimap:not(#\#) {
   background-color: #343435;
 }
