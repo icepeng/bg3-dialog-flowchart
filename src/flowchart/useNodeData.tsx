@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Edge, Node, Position } from "reactflow";
 import type * as Gustav from "@gustav/types";
 import { getNodesRecursive, parsePosition } from "@gustav/utils";
@@ -79,18 +79,21 @@ function useNodeDataState(dialogData: Gustav.DialogData) {
     [filteredData]
   );
 
-  function getSpeakerName(speakerno: number) {
-    if (speakerno === -666) {
-      return "Narrator";
-    }
+  const getSpeakerName = useCallback(
+    (speakerno: number) => {
+      if (speakerno === -666) {
+        return "Narrator";
+      }
 
-    const speaker = dialogData.SpeakerDict[speakerno];
-    return (
-      speaker?.SpeakerCharacter?.DisplayName ??
-      speaker?.SpeakerGroupName ??
-      "Unknown"
-    );
-  }
+      const speaker = dialogData.SpeakerDict[speakerno];
+      return (
+        speaker?.SpeakerCharacter?.DisplayName ??
+        speaker?.SpeakerGroupName ??
+        "Unknown"
+      );
+    },
+    [dialogData]
+  );
 
   return {
     dialogData,
