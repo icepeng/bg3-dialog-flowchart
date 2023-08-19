@@ -1,12 +1,12 @@
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
-import { VisualStateNode } from "../gustav/types";
+import { CinematicNode } from "@gustav/types";
 import NodePopover from "./NodePopover";
 
-const VisualStateNode = memo<NodeProps<VisualStateNode>>(
+const CinematicNode = memo<NodeProps<CinematicNode>>(
   ({ data, isConnectable }) => {
     const category = data.Constructor;
-    const context = data.EditorData.stateContext!;
+    const context = data.EditorData.CinematicNodeContext!;
 
     return (
       <>
@@ -16,7 +16,7 @@ const VisualStateNode = memo<NodeProps<VisualStateNode>>(
           isConnectable={isConnectable}
         />
         <div>[{category}]</div>
-        <div>Visual State: {context}</div>
+        <div>시네마틱: {context}</div>
         <Handle
           type="source"
           position={Position.Right}
@@ -30,4 +30,4 @@ const VisualStateNode = memo<NodeProps<VisualStateNode>>(
   }
 );
 
-export default VisualStateNode;
+export default CinematicNode;

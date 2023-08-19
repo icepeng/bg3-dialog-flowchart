@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { Edge, Node, Position } from "reactflow";
-import type * as Gustav from "../gustav/types";
-import { getNodesRecursive, parsePosition } from "../gustav/utils";
-import { useConfig } from "./useConfig";
+import type * as Gustav from "@gustav/types";
+import { getNodesRecursive, parsePosition } from "@gustav/utils";
+import { useWorkspace } from "./useWorkspace";
 
 type NodeDataProviderProps = {
   dialogData: Gustav.DialogData;
@@ -53,7 +53,7 @@ function getEdgesFromGustav(gustavNode: Gustav.Node): Edge[] {
 }
 
 function useNodeDataState(dialogData: Gustav.DialogData) {
-  const { rootId } = useConfig();
+  const { rootId } = useWorkspace();
 
   // Node Data
   const nodeDataList = React.useMemo(

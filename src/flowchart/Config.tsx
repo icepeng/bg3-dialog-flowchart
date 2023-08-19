@@ -1,14 +1,14 @@
 import { Button, HStack, Input, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useReactFlow } from "reactflow";
-import { useConfig } from "./useConfig";
+import { useWorkspace } from "./useWorkspace";
 import { useNodeData } from "./useNodeData";
 
 const urlParams = new URLSearchParams(window.location.search);
 
 function Config() {
   const { rootNodes } = useNodeData();
-  const { rootId, setRootId } = useConfig();
+  const { rootId, setRootId } = useWorkspace();
   const { fitView } = useReactFlow();
 
   const [nodeSearchId, setNodeSearchId] = useState<string>("");

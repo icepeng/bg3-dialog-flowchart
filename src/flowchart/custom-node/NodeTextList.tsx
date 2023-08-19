@@ -1,6 +1,6 @@
 import { Divider, VStack, chakra } from "@chakra-ui/react";
-import { Node, RuleGroup, TagText } from "../gustav/types";
-import { useWeblate } from "../weblate/useWeblate";
+import { Node, RuleGroup, TagText } from "@gustav/types";
+import { useWeblate } from "@weblate/useWeblate";
 
 function stringifyRuleGroup(ruleGroup: RuleGroup) {
   const { Rules } = ruleGroup;

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
-import { RollResultNode } from "../gustav/types";
+import { RollResultNode } from "@gustav/types";
 
 const RollResultNode = memo<NodeProps<RollResultNode>>(
   ({ data, isConnectable }) => {

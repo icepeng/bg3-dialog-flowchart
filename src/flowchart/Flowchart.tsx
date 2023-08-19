@@ -4,41 +4,15 @@ import ReactFlow, {
   Controls,
   MiniMap,
   Node,
-  NodeProps,
   useReactFlow,
 } from "reactflow";
-import type * as Gustav from "../gustav/types";
-import CinematicNode from "./CinematicNode";
-import DialogNode from "./DialogNode";
-import JumpNode from "./JumpNode";
-import RollNode from "./RollNode";
-import RollResultNode from "./RollResultNode";
-import VisualStateNode from "./VisualStateNode";
-import { useConfig } from "./useConfig";
+import type * as Gustav from "@gustav/types";
 import { useNodeData } from "./useNodeData";
-
-const nodeTypes: Record<
-  Gustav.Node["Constructor"],
-  React.NamedExoticComponent<NodeProps>
-> = {
-  Jump: JumpNode,
-  Alias: DialogNode,
-  TagAnswer: DialogNode,
-  TagQuestion: DialogNode,
-  TagGreeting: DialogNode,
-  "Nested Dialog": DialogNode,
-  RollResult: RollResultNode,
-  Pop: DialogNode,
-  ActiveRoll: RollNode,
-  FallibleQuestionResult: DialogNode,
-  PassiveRoll: RollNode,
-  TagCinematic: CinematicNode,
-  Trade: DialogNode,
-  "Visual State": VisualStateNode,
-};
+import { useWorkspace } from "./useWorkspace";
+import { nodeTypes } from "./custom-node";
 
 function Flowchart() {
-  const { rootId } = useConfig();
+  const { rootId } = useWorkspace();
   const { processedNodes, processedEdges } = useNodeData();
   const { fitView, setNodes, setEdges } = useReactFlow();
 

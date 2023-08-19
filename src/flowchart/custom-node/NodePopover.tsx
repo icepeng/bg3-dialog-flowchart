@@ -1,4 +1,4 @@
-import { Node } from "../gustav/types";
+import { Node } from "@gustav/types";
 
 export interface NodePopoverProps {
   nodeData: Node;

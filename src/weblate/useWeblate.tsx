@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TagText } from "../gustav/types";
-import { useGustav } from "../gustav/useGustav";
+import { TagText } from "@gustav/types";
+import { useGustav } from "@gustav/useGustav";
 import { TranslationData, TranslationUnit } from "./types";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";

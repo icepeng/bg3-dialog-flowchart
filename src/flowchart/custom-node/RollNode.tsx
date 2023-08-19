@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
-import { Node } from "../gustav/types";
+import { RollNode } from "@gustav/types";
 import NodePopover from "./NodePopover";
 import NodeTextList from "./NodeTextList";
-import { useNodeData } from "./useNodeData";
+import { useNodeData } from "../useNodeData";
 
-const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
+const RollNode = memo<NodeProps<RollNode>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
 
   const category = data.Constructor;
@@ -22,6 +22,9 @@ const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
       />
       {hasFlags && "(Flag Check)"}
       <div>
+        {data.RollType}: {data.RollAbility}
+      </div>
+      <div>
         [{category}] <span>{speakerName}:</span>
       </div>
       <NodeTextList nodeData={data} />
@@ -37,4 +40,4 @@ const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
   );
 });
 
-export default DialogNode;
+export default RollNode;
