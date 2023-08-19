@@ -5,6 +5,7 @@ import { useWeblate } from "@weblate/useWeblate";
 import { useState } from "react";
 import { useOnSelectionChange } from "reactflow";
 import { useNodeData } from "./useNodeData";
+import { stringifyRuleGroup } from "@/gustav/utils";
 
 function PropertiesPanel() {
   const [data, setData] = useState<Gustav.Node>();
@@ -98,26 +99,20 @@ const TextProperties: React.FC<{
 }> = ({ speakerName, TaggedTextList }) => {
   return (
     <div>
-      <Text fontSize="xs" fontWeight="semibold">
-        TEXTS
-      </Text>
-      <div>Speaker: {speakerName}</div>
       <VStack divider={<Divider />} alignItems="flex-start">
+        <div>
+          <Text fontSize="xs" fontWeight="semibold">
+            TEXTS
+          </Text>
+          <div>Speaker: {speakerName}</div>
+        </div>
         {TaggedTextList.map((TaggedText, i) => {
           const hasRule =
             TaggedText.RuleGroup.Rules.flatMap((rule) => rule.TagNames).length >
             0;
           return (
-            <div key={i}>
-              {hasRule && (
-                <div>
-                  (
-                  {TaggedText.RuleGroup.Rules.map((rule) =>
-                    rule.TagNames.join(",")
-                  ).join(" & ")}
-                  )
-                </div>
-              )}
+            <VStack alignItems="flex-start" key={i}>
+              {hasRule && <div>{stringifyRuleGroup(TaggedText.RuleGroup)}</div>}
               {TaggedText.TagTexts.map((TagText) => (
                 <NodeText
                   key={TagText.LineId}
@@ -125,7 +120,7 @@ const TextProperties: React.FC<{
                   TagText={TagText}
                 />
               ))}
-            </div>
+            </VStack>
           );
         })}
       </VStack>

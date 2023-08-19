@@ -29,13 +29,13 @@ interface EditorData {
 
 export interface Rule {
   HasChildRules: boolean;
-  TagCombineOp: 0 | 2;
+  TagCombineOp: 0 | 1 | 2; // 0=AND, 1=OR, 2=NOT
   Tags: string[];
   TagNames: string[];
 }
 
 export interface RuleGroup {
-  TagCombineOp: 0 | 2;
+  TagCombineOp: 0 | 1 | 2;
   Rules: Rule[];
 }
 

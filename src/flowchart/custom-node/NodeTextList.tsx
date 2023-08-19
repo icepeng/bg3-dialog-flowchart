@@ -1,12 +1,8 @@
+import { stringifyRuleGroup } from "@gustav/utils";
 import { Divider, VStack } from "@chakra-ui/react";
-import { Node, RuleGroup, TagText } from "@gustav/types";
+import { Node, TagText } from "@gustav/types";
 import { useWeblate } from "@weblate/useWeblate";
 import { Fragment } from "react";
-
-function stringifyRuleGroup(ruleGroup: RuleGroup) {
-  const { Rules } = ruleGroup;
-  return Rules.map((rule) => rule.TagNames.join(",")).join(" & ");
-}
 
 interface NodeTextListProps {
   nodeData: Node;
@@ -21,7 +17,7 @@ const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
         const hasRule = TaggedText.HasTagRule;
         return (
           <Fragment key={i}>
-            {hasRule && <div>({stringifyRuleGroup(TaggedText.RuleGroup)})</div>}
+            {hasRule && <div>{stringifyRuleGroup(TaggedText.RuleGroup)}</div>}
             <VStack divider={<Divider />}>
               {TaggedText.TagTexts.map((TagText) => (
                 <NodeText key={TagText.LineId} TagText={TagText} />

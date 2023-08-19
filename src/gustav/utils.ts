@@ -1,4 +1,4 @@
-import { Node } from "./types";
+import { Node, RuleGroup } from "./types";
 
 export function parsePosition(position: string) {
   const [x, y] = position.split(";");
@@ -68,4 +68,41 @@ export function getAllFlags(datalist: Node[]) {
         .map((flag) => [flag.UUID, flag] as const)
     ).values(),
   ].sort((a, b) => a.Name.localeCompare(b.Name));
+}
+
+function parenthize(str: string) {
+  return `(${str})`;
+}
+
+function parenthizeIfNeeded(str: string) {
+  if (str.startsWith("(") && str.endsWith(")")) {
+    return str;
+  }
+  if (str.startsWith("!")) {
+    return str;
+  }
+  return parenthize(str);
+}
+
+function combine(arr: string[], op: 0 | 1 | 2) {
+  if (op === 0) {
+    return arr.join(" & ");
+  }
+  if (op === 1) {
+    return arr.join(" | ");
+  }
+  if (op === 2) {
+    return `!${parenthize(arr.join(" & "))}`;
+  }
+  throw new Error(`Invalid op: ${op}`);
+}
+
+export function stringifyRuleGroup(ruleGroup: RuleGroup) {
+  const { Rules, TagCombineOp } = ruleGroup;
+  return combine(
+    Rules.map((rule) => combine(rule.TagNames, rule.TagCombineOp)).map(
+      parenthizeIfNeeded
+    ),
+    TagCombineOp
+  );
 }
