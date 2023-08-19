@@ -1,6 +1,6 @@
-import { stringifyRuleGroup } from "@gustav/utils";
 import { Divider, VStack } from "@chakra-ui/react";
 import { Node, TagText } from "@gustav/types";
+import { stringifyRuleGroup } from "@gustav/utils";
 import { useWeblate } from "@weblate/useWeblate";
 import { Fragment } from "react";
 
