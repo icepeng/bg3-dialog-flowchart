@@ -53,14 +53,14 @@ export interface TaggedText {
   TagTexts: TagText[];
 }
 
-interface Flag {
+export interface Flag {
   UUID: string;
   paramval: 0 | 1;
   value: boolean;
   Name: string;
 }
 
-interface FlagGroup {
+export interface FlagGroup {
   Flags: Flag[];
   Type: "Global" | "Tag" | "Object" | "Dialog";
 }
@@ -106,7 +106,7 @@ export interface RollNode extends BaseNode {
   Constructor: "PassiveRoll" | "ActiveRoll";
   RollAbility: string;
   RollAdvantage: number;
-  RollType: "SkillCheck" | "RawAbility";
+  RollType: "SkillCheck" | "RawAbility" | "";
 }
 
 export interface RollResultNode extends BaseNode {

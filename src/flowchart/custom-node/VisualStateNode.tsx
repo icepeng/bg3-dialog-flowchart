@@ -1,7 +1,6 @@
-import { memo } from "react";
-import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
 import { VisualStateNode } from "@gustav/types";
-import NodePopover from "./NodePopover";
+import { memo } from "react";
+import { Handle, NodeProps, Position } from "reactflow";
 
 const VisualStateNode = memo<NodeProps<VisualStateNode>>(
   ({ data, isConnectable }) => {
@@ -22,9 +21,6 @@ const VisualStateNode = memo<NodeProps<VisualStateNode>>(
           position={Position.Right}
           isConnectable={isConnectable}
         />
-        <NodeToolbar>
-          <NodePopover nodeData={data} />
-        </NodeToolbar>
       </>
     );
   }

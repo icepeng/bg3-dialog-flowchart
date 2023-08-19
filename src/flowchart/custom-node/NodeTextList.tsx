@@ -1,6 +1,7 @@
-import { Divider, VStack, chakra } from "@chakra-ui/react";
+import { Divider, VStack } from "@chakra-ui/react";
 import { Node, RuleGroup, TagText } from "@gustav/types";
 import { useWeblate } from "@weblate/useWeblate";
+import { Fragment } from "react";
 
 function stringifyRuleGroup(ruleGroup: RuleGroup) {
   const { Rules } = ruleGroup;
@@ -19,14 +20,14 @@ const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
       {nodeData.TaggedTextList.map((TaggedText, i) => {
         const hasRule = TaggedText.HasTagRule;
         return (
-          <>
+          <Fragment key={i}>
             {hasRule && <div>({stringifyRuleGroup(TaggedText.RuleGroup)})</div>}
-            <VStack divider={<Divider />} key={i}>
+            <VStack divider={<Divider />}>
               {TaggedText.TagTexts.map((TagText) => (
                 <NodeText key={TagText.LineId} TagText={TagText} />
               ))}
             </VStack>
-          </>
+          </Fragment>
         );
       })}
       {isEndNode && <div>{"<대화 종료>"}</div>}
@@ -39,21 +40,16 @@ interface NodeTextProps {
 }
 
 const NodeText: React.FC<NodeTextProps> = ({ TagText }) => {
-  const { getTranslatedText, getWeblateUrl } = useWeblate();
+  const { getTranslatedText } = useWeblate();
 
-  const url = getWeblateUrl(TagText);
   const sourceText = TagText.Text.Value;
   const targetText = getTranslatedText(TagText);
 
   return (
-    <chakra.a _hover={{ background: "#232323" }} href={url} target="_blank">
-      <span>{sourceText}</span>
-      {targetText && (
-        <>
-          <br /> <span>{targetText}</span>
-        </>
-      )}
-    </chakra.a>
+    <div>
+      <div>{sourceText}</div>
+      {targetText && <div>{targetText}</div>}
+    </div>
   );
 };
 

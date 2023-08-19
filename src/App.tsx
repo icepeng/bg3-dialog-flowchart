@@ -90,7 +90,12 @@ function App() {
     >
       <GustavProvider>
         <WeblateProvider>
-          <Flex direction={"column"} height={"100vh"} width={"100vw"}>
+          <Flex
+            direction={"column"}
+            height={"100vh"}
+            width={"100vw"}
+            overflow="hidden"
+          >
             <PathSelector />
             <Workspace />
           </Flex>

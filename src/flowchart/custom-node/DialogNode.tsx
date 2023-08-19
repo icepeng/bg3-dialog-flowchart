@@ -1,16 +1,14 @@
-import { memo } from "react";
-import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
 import { Node } from "@gustav/types";
-import NodePopover from "./NodePopover";
-import NodeTextList from "./NodeTextList";
+import { memo } from "react";
+import { Handle, NodeProps, Position } from "reactflow";
 import { useNodeData } from "../useNodeData";
+import NodeFlag from "./NodeFlag";
+import NodeTextList from "./NodeTextList";
 
 const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
 
   const category = data.Constructor;
-  const checkFlags = data.CheckFlags;
-  const hasFlags = checkFlags.length > 0;
   const speakerName = getSpeakerName(data.SpeakerNo);
 
   return (
@@ -20,7 +18,7 @@ const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
         position={Position.Left}
         isConnectable={isConnectable}
       />
-      {hasFlags && "(Flag Check)"}
+      <NodeFlag nodeData={data} />
       <div>
         [{category}] <span>{speakerName}:</span>
       </div>
@@ -30,9 +28,6 @@ const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
         position={Position.Right}
         isConnectable={isConnectable}
       />
-      <NodeToolbar>
-        <NodePopover nodeData={data} />
-      </NodeToolbar>
     </>
   );
 });
