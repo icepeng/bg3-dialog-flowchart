@@ -3,6 +3,7 @@ import {
   ChakraProvider,
   Flex,
   Input,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -18,6 +19,7 @@ import Workspace from "./flowchart/Workspace";
 import { GustavProvider, useGustav } from "./gustav/useGustav";
 import theme from "./theme";
 import { WeblateProvider, useWeblate } from "./weblate/useWeblate";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 function PathSelector() {
   const { path, setPath } = useGustav();
@@ -49,7 +51,7 @@ function PathSelector() {
         placeholder="파일 경로"
       />
       <Button onClick={() => setPath(value)}>Load</Button>
-      <Button onClick={onOpen}>API Token</Button>
+      <Button onClick={onOpen}>Weblate 연동</Button>
       <Modal
         size={"2xl"}
         isOpen={isOpen}
@@ -61,6 +63,11 @@ function PathSelector() {
           <ModalHeader>API Token 입력</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Link href="https://waldo.team/accounts/profile/#api" isExternal>
+              https://waldo.team/accounts/profile/#api{" "}
+              <ExternalLinkIcon mx="2px" />
+            </Link>{" "}
+            에서 복사할 수 있습니다.
             <Input
               value={apiTokenValue}
               onChange={(e) => setApiTokenValue(e.currentTarget.value)}
