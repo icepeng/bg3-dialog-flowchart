@@ -43,6 +43,7 @@ function Flowchart() {
       nodeTypes={nodeTypes}
       onNodeClick={onNodeClick}
       attributionPosition="bottom-left"
+      minZoom={0.05}
     >
       <Background />
       <Controls />
