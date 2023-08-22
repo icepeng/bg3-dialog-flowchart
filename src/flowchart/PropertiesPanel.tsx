@@ -148,7 +148,7 @@ const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
       {targetText && <div>{targetText}</div>}
       <HStack>
         {url && (
-          <Link href={url} isExternal>
+          <Link href={url} target="weblate">
             Weblate <ExternalLinkIcon mx="2px" />
           </Link>
         )}
