@@ -25,7 +25,9 @@ function PathSelector() {
   const { path, setPath } = useGustav();
   const { apiToken, setApiToken } = useWeblate();
   const [value, setValue] = useState(path);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    defaultIsOpen: !apiToken,
+  });
 
   const [apiTokenValue, setApiTokenValue] = useState(apiToken);
 
@@ -60,14 +62,14 @@ function PathSelector() {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>API Token 입력</ModalHeader>
+          <ModalHeader>Weblate 연동</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Link href="https://waldo.team/accounts/profile/#api" isExternal>
               https://waldo.team/accounts/profile/#api{" "}
               <ExternalLinkIcon mx="2px" />
             </Link>{" "}
-            에서 복사할 수 있습니다.
+            에서 API Token을 복사할 수 있습니다.
             <Input
               value={apiTokenValue}
               onChange={(e) => setApiTokenValue(e.currentTarget.value)}
