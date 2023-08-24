@@ -78,13 +78,16 @@ function useWeblateState() {
     localStorage.setItem("apiToken", apiToken);
   }, [apiToken]);
 
-  function getWeblateUrl(tagText: Gustav.TagText) {
-    const unit = translationData?.[tagText.Text.Handle];
-    if (unit) {
-      return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
-    }
-    return undefined;
-  }
+  const getWeblateUrl = useCallback(
+    (tagText: Gustav.TagText) => {
+      const unit = translationData?.[tagText.Text.Handle];
+      if (unit) {
+        return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
+      }
+      return undefined;
+    },
+    [translationData]
+  );
 
   const getTranslatedText = useCallback(
     (tagText: Gustav.TagText) => {

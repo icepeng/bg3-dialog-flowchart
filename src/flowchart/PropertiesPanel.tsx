@@ -1,21 +1,14 @@
+import { stringifyRuleGroup } from "@/gustav/utils";
 import { CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { Center, Divider, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import type * as Gustav from "@gustav/types";
 import { useWeblate } from "@weblate/useWeblate";
-import { useState } from "react";
-import { useOnSelectionChange } from "reactflow";
 import { useNodeData } from "./useNodeData";
-import { stringifyRuleGroup } from "@/gustav/utils";
+import { useWorkspace } from "./useWorkspace";
 
 function PropertiesPanel() {
-  const [data, setData] = useState<Gustav.Node>();
+  const { selectedData: data } = useWorkspace();
   const { getSpeakerName } = useNodeData();
-
-  useOnSelectionChange({
-    onChange(selection) {
-      setData(selection.nodes[0]?.data);
-    },
-  });
 
   if (!data)
     return (

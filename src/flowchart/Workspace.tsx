@@ -14,18 +14,18 @@ function Workspace() {
   if (!dialogData) return null;
 
   return (
-    <WorkspaceProvider>
-      <NodeDataProvider dialogData={dialogData}>
-        <ReactFlowProvider>
+    <ReactFlowProvider>
+      <WorkspaceProvider>
+        <NodeDataProvider dialogData={dialogData}>
           <Config />
           <Progress />
           <Flex flex="1 0 auto" maxH="100%">
             <Flowchart />
             <PropertiesPanel />
           </Flex>
-        </ReactFlowProvider>
-      </NodeDataProvider>
-    </WorkspaceProvider>
+        </NodeDataProvider>
+      </WorkspaceProvider>
+    </ReactFlowProvider>
   );
 }
 

@@ -1,15 +1,20 @@
 import { Button, HStack, Input, Select, Switch } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useReactFlow } from "reactflow";
-import { useWorkspace } from "./useWorkspace";
 import { useNodeData } from "./useNodeData";
+import { useWorkspace } from "./useWorkspace";
 
 const urlParams = new URLSearchParams(window.location.search);
 
 function Config() {
   const { rootNodes } = useNodeData();
-  const { rootId, setRootId, highlightUntranslated, setHighlightUntranslated } =
-    useWorkspace();
+  const {
+    rootId,
+    setRootId,
+    highlightUntranslated,
+    setHighlightUntranslated,
+    play,
+  } = useWorkspace();
   const { fitView } = useReactFlow();
 
   const [nodeSearchId, setNodeSearchId] = useState<string>("");
@@ -24,7 +29,10 @@ function Config() {
   }, [fitView]);
 
   function searchNode() {
-    setTimeout(() => fitView({ nodes: [{ id: nodeSearchId }] }), 0);
+    setTimeout(
+      () => fitView({ nodes: [{ id: nodeSearchId }], duration: 200 }),
+      0
+    );
   }
 
   return (
@@ -49,6 +57,7 @@ function Config() {
         />
         <Button onClick={searchNode}>Find</Button>
       </HStack>
+      <Button onClick={() => play()}>Autoplay</Button>
       <Switch
         checked={highlightUntranslated}
         onChange={(e) => setHighlightUntranslated(e.target.checked)}

@@ -21,7 +21,7 @@ import theme from "./theme";
 import { WeblateProvider, useWeblate } from "./weblate/useWeblate";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
-function PathSelector() {
+function Header() {
   const { path, setPath } = useGustav();
   const { apiToken, setApiToken } = useWeblate();
   const [value, setValue] = useState(path);
@@ -103,7 +103,7 @@ function App() {
             width={"100vw"}
             overflow="hidden"
           >
-            <PathSelector />
+            <Header />
             <Workspace />
           </Flex>
         </WeblateProvider>
