@@ -30,7 +30,7 @@ function Flowchart() {
     (_: React.MouseEvent, node: Node<Gustav.Node>) => {
       if (node.data.Constructor === "Jump") {
         const targetId = node.data.JumpTarget!;
-        fitView({ nodes: [{ id: targetId }] });
+        fitView({ nodes: [{ id: targetId }], duration: 200 });
       }
     },
     [fitView]
