@@ -1,17 +1,14 @@
-import { Button, HStack, Input, Select, Switch } from "@chakra-ui/react";
+import { Button, HStack, Input, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useReactFlow } from "reactflow";
-import { useWorkspace } from "./useWorkspace";
 import { useNodeData } from "./useNodeData";
-import { useWeblate } from "@/weblate/useWeblate";
+import { useWorkspace } from "./useWorkspace";
 
 const urlParams = new URLSearchParams(window.location.search);
 
-function Config() {
+function Navigator() {
   const { rootNodes } = useNodeData();
-  const { rootId, setRootId, highlightUntranslated, setHighlightUntranslated } =
-    useWorkspace();
-  const { translationData } = useWeblate();
+  const { rootId, setRootId } = useWorkspace();
   const { fitView } = useReactFlow();
 
   const [nodeSearchId, setNodeSearchId] = useState<string>("");
@@ -51,16 +48,8 @@ function Config() {
         />
         <Button onClick={searchNode}>Find</Button>
       </HStack>
-      {translationData && (
-        <Switch
-          checked={highlightUntranslated}
-          onChange={(e) => setHighlightUntranslated(e.target.checked)}
-        >
-          미번역 강조
-        </Switch>
-      )}
     </HStack>
   );
 }
 
-export default Config;
+export default Navigator;

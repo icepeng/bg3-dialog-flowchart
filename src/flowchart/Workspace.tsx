@@ -1,6 +1,6 @@
 import { useGustav } from "@gustav/useGustav";
 import { ReactFlowProvider } from "reactflow";
-import Config from "./Config";
+import Navigator from "./Navigator";
 import Flowchart from "./Flowchart";
 import Progress from "./Progress";
 import PropertiesPanel from "./PropertiesPanel";
@@ -17,7 +17,7 @@ function Workspace() {
     <WorkspaceProvider>
       <NodeDataProvider dialogData={dialogData}>
         <ReactFlowProvider>
-          <Config />
+          <Navigator />
           <Progress />
           <Flex flex="1 0 auto" maxH="100%">
             <Flowchart />

@@ -4,12 +4,14 @@ import ReactFlow, {
   Controls,
   MiniMap,
   Node,
+  Panel,
   useReactFlow,
 } from "reactflow";
 import type * as Gustav from "@gustav/types";
 import { useNodeData } from "./useNodeData";
 import { useWorkspace } from "./useWorkspace";
 import { nodeTypes } from "./custom-node";
+import ConfigPanel from "./ConfigPanel";
 
 function Flowchart() {
   const { rootId, togglePinnedId } = useWorkspace();
@@ -52,6 +54,9 @@ function Flowchart() {
       <Background />
       <Controls />
       <MiniMap nodeColor="#6ede87" nodeStrokeWidth={3} zoomable pannable />
+      <Panel position="bottom-center">
+        <ConfigPanel />
+      </Panel>
     </ReactFlow>
   );
 }

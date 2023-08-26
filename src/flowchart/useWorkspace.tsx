@@ -14,6 +14,7 @@ function useWorkspaceState() {
   const [selectedId, setSelectedId] = useState<string>();
   const [highlightUntranslated, setHighlightUntranslated] =
     useState<boolean>(false);
+  const [displayJumpEdge, setDisplayJumpEdge] = useState<boolean>(false);
 
   React.useEffect(() => {
     setRootId(undefined);
@@ -44,6 +45,8 @@ function useWorkspaceState() {
     setSelectedId,
     highlightUntranslated,
     setHighlightUntranslated,
+    displayJumpEdge,
+    setDisplayJumpEdge,
   };
 }
 

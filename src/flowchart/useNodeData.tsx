@@ -48,20 +48,37 @@ function getNodeFromGustav(
   };
 }
 
-function getEdgesFromGustav(gustavNode: Gustav.Node): Edge[] {
-  return gustavNode.Children.map((child) => {
-    const edge: Edge = {
-      id: `${gustavNode.UUID}-${child}`,
-      source: gustavNode.UUID,
-      target: child,
-      type: "smoothstep",
-    };
-    return edge;
-  });
+function getEdgesFromGustav(
+  gustavNode: Gustav.Node,
+  displayJumpEdge: boolean
+): Edge[] {
+  return [
+    ...gustavNode.Children.map((child) => {
+      const edge: Edge = {
+        id: `${gustavNode.UUID}-${child}`,
+        source: gustavNode.UUID,
+        target: child,
+        type: "smoothstep",
+      };
+      return edge;
+    }),
+    ...(displayJumpEdge && gustavNode.JumpTarget
+      ? [
+          {
+            id: `${gustavNode.UUID}-jump`,
+            source: gustavNode.UUID,
+            target: gustavNode.JumpTarget,
+            type: "bezier",
+            animated: true,
+          },
+        ]
+      : []),
+  ];
 }
 
 function useNodeDataState(dialogData: Gustav.DialogData) {
-  const { highlightUntranslated, pinnedIdSet } = useWorkspace();
+  const { highlightUntranslated, displayJumpEdge, pinnedIdSet } =
+    useWorkspace();
   const { checkNodeTranslated } = useWeblate();
 
   // Node Data
@@ -97,8 +114,11 @@ function useNodeDataState(dialogData: Gustav.DialogData) {
     ]
   );
   const processedEdges: Edge[] = useMemo(
-    () => nodesToRender.flatMap((node) => getEdgesFromGustav(node)),
-    [nodesToRender]
+    () =>
+      nodesToRender.flatMap((node) =>
+        getEdgesFromGustav(node, displayJumpEdge)
+      ),
+    [nodesToRender, displayJumpEdge]
   );
 
   const getSpeakerName = useCallback(
