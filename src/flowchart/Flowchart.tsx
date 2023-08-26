@@ -12,7 +12,7 @@ import { useWorkspace } from "./useWorkspace";
 import { nodeTypes } from "./custom-node";
 
 function Flowchart() {
-  const { rootId } = useWorkspace();
+  const { rootId, togglePinnedId } = useWorkspace();
   const { processedNodes, processedEdges } = useNodeData();
   const { fitView, setNodes, setEdges } = useReactFlow();
 
@@ -27,13 +27,17 @@ function Flowchart() {
   }, [processedNodes, processedEdges, setNodes, setEdges]);
 
   const onNodeClick = useCallback(
-    (_: React.MouseEvent, node: Node<Gustav.Node>) => {
+    (e: React.MouseEvent, node: Node<Gustav.Node>) => {
+      if (e.ctrlKey) {
+        togglePinnedId(node.id);
+        return;
+      }
       if (node.data.Constructor === "Jump") {
         const targetId = node.data.JumpTarget!;
         fitView({ nodes: [{ id: targetId }], duration: 200 });
       }
     },
-    [fitView]
+    [fitView, togglePinnedId]
   );
 
   return (

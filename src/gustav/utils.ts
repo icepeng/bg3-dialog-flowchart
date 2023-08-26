@@ -1,3 +1,4 @@
+import { floydWarshall } from "./floyd";
 import { Node, RuleGroup } from "./types";
 
 export function parsePosition(position: string) {
@@ -24,38 +25,42 @@ export function checkFlagFulfilled(
   return result;
 }
 
-export function getNodesRecursive(
+export function getNodesPathThrough(
   record: Record<string, Node>,
-  rootId: string
+  pinnedIds: string[]
 ): Node[] {
-  const visited = new Set<string>();
+  const graphForward: Record<string, Record<string, 1>> = {};
+  const graphBackward: Record<string, Record<string, 1>> = {};
 
-  function rec(id: string): Node[] {
-    if (visited.has(id)) {
-      return [];
-    }
-    visited.add(id);
-
-    const node = record[id];
-    if (!node.Children || node.Children.length === 0) {
-      return [node];
-    }
-
-    // TODO: flag 필터 적용
-    // const isFlagFulfilled = checkFlagFulfilled(node, flagState);
-
-    // if (!isFlagFulfilled) {
-    //   return [];
-    // }
-
-    return [
-      node,
-      ...node.Children.flatMap((child) => rec(child)),
-      ...(node.JumpTarget ? rec(node.JumpTarget) : []),
-    ];
+  for (const id in record) {
+    graphForward[id] = {};
+    graphBackward[id] = {};
   }
 
-  return rec(rootId);
+  for (const id in record) {
+    const node = record[id];
+    for (const child of node.Children) {
+      graphForward[id][child] = 1;
+      graphBackward[child][id] = 1;
+    }
+    if (node.JumpTarget) {
+      graphForward[id][node.JumpTarget] = 1;
+      graphBackward[node.JumpTarget][id] = 1;
+    }
+  }
+
+  const forward = floydWarshall(graphForward);
+  const backward = floydWarshall(graphBackward);
+
+  return Object.keys(record)
+    .filter((id) =>
+      pinnedIds.every(
+        (pinnedId) =>
+          forward[pinnedId][id] !== Infinity ||
+          backward[pinnedId][id] !== Infinity
+      )
+    )
+    .map((id) => record[id]);
 }
 
 export function getAllFlags(datalist: Node[]) {

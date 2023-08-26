@@ -2,9 +2,10 @@ import * as React from "react";
 import { useCallback, useMemo } from "react";
 import { Edge, Node, Position } from "reactflow";
 import type * as Gustav from "@gustav/types";
-import { getNodesRecursive, parsePosition } from "@gustav/utils";
+import { getNodesPathThrough, parsePosition } from "@gustav/utils";
 import { useWorkspace } from "./useWorkspace";
 import { useWeblate } from "@/weblate/useWeblate";
+import { clsx } from "clsx";
 
 type NodeDataProviderProps = {
   dialogData: Gustav.DialogData;
@@ -14,7 +15,8 @@ type NodeDataProviderProps = {
 function getNodeFromGustav(
   gustavNode: Gustav.Node,
   gustavNodes: Gustav.DialogData["Nodes"],
-  isTranslated: boolean
+  isTranslated: boolean,
+  isPinned: boolean
 ): Node {
   const { x, y } = parsePosition(gustavNode.EditorData.position);
 
@@ -34,9 +36,11 @@ function getNodeFromGustav(
     },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    className: isTranslated
-      ? "react-flow__node-default"
-      : "react-flow__node-default react-flow__node-untranslated",
+    className: clsx(
+      "react-flow__node-default",
+      !isTranslated ? "react-flow__node-untranslated" : undefined,
+      isPinned ? "react-flow__node-pinned" : undefined
+    ),
     style: {
       width: "240px",
     },
@@ -57,38 +61,44 @@ function getEdgesFromGustav(gustavNode: Gustav.Node): Edge[] {
 }
 
 function useNodeDataState(dialogData: Gustav.DialogData) {
-  const { rootId, highlightUntranslated } = useWorkspace();
+  const { highlightUntranslated, pinnedIdSet } = useWorkspace();
   const { checkNodeTranslated } = useWeblate();
 
   // Node Data
-  const nodeDataList = useMemo(
-    () => Object.values(dialogData.Nodes),
-    [dialogData]
-  );
   const rootNodes = useMemo(
     () => dialogData.RootNodes.map((id) => dialogData.Nodes[id]),
     [dialogData]
   );
 
   // Flowchart
-  const filteredData = useMemo(
-    () => (rootId ? getNodesRecursive(dialogData.Nodes, rootId) : nodeDataList),
-    [dialogData.Nodes, nodeDataList, rootId]
+  const nodesToRender = useMemo(
+    () =>
+      pinnedIdSet.size > 0
+        ? getNodesPathThrough(dialogData.Nodes, [...pinnedIdSet])
+        : Object.values(dialogData.Nodes),
+    [dialogData.Nodes, pinnedIdSet]
   );
   const processedNodes: Node[] = useMemo(
     () =>
-      filteredData.map((node) =>
+      nodesToRender.map((node) =>
         getNodeFromGustav(
           node,
           dialogData.Nodes,
-          highlightUntranslated ? checkNodeTranslated(node) : true
+          highlightUntranslated ? checkNodeTranslated(node) : true,
+          pinnedIdSet.has(node.UUID)
         )
       ),
-    [filteredData, dialogData.Nodes, checkNodeTranslated, highlightUntranslated]
+    [
+      nodesToRender,
+      dialogData.Nodes,
+      checkNodeTranslated,
+      highlightUntranslated,
+      pinnedIdSet,
+    ]
   );
   const processedEdges: Edge[] = useMemo(
-    () => filteredData.flatMap((node) => getEdgesFromGustav(node)),
-    [filteredData]
+    () => nodesToRender.flatMap((node) => getEdgesFromGustav(node)),
+    [nodesToRender]
   );
 
   const getSpeakerName = useCallback(

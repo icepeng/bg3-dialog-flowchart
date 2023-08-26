@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useGustav } from "@gustav/useGustav";
 
 type WorkspaceProviderProps = {
@@ -10,6 +10,7 @@ function useWorkspaceState() {
   const { path } = useGustav();
 
   const [rootId, setRootId] = useState<string>();
+  const [pinnedIdSet, setPinnedIdSet] = useState<Set<string>>(new Set());
   const [selectedId, setSelectedId] = useState<string>();
   const [highlightUntranslated, setHighlightUntranslated] =
     useState<boolean>(false);
@@ -18,9 +19,27 @@ function useWorkspaceState() {
     setRootId(undefined);
   }, [path]);
 
+  const togglePinnedId = useCallback(
+    (id: string) => {
+      setPinnedIdSet((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(id)) {
+          newSet.delete(id);
+        } else {
+          newSet.add(id);
+        }
+        return newSet;
+      });
+    },
+    [setPinnedIdSet]
+  );
+
   return {
     rootId,
     setRootId,
+    pinnedIdSet,
+    setPinnedIdSet,
+    togglePinnedId,
     selectedId,
     setSelectedId,
     highlightUntranslated,
