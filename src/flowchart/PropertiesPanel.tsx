@@ -4,7 +4,7 @@ import { Center, Divider, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import type * as Gustav from "@gustav/types";
 import { useAudio } from "@gustav/useAudio";
 import { useWeblate } from "@weblate/useWeblate";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useOnSelectionChange } from "reactflow";
 import { useNodeData } from "./useNodeData";
 
@@ -137,7 +137,8 @@ const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
   const sourceText = TagText.Text.Value;
   const handle = TagText.Text.Handle;
 
-  const { isAudioAvailable, playAudio } = useAudio(handle);
+  const { isReady, audioProps } = useAudio(handle);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const url = getWeblateUrl(TagText);
   const targetText = getTranslatedText(TagText);
@@ -159,11 +160,12 @@ const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
         <Text cursor="pointer" onClick={handleCopy}>
           Copy <CopyIcon mx="2px" />
         </Text>
-        {isAudioAvailable && (
-          <Text cursor="pointer" onClick={playAudio}>
+        {isReady && (
+          <Text cursor="pointer" onClick={() => audioRef.current?.play()}>
             Play <PhoneIcon mx="2px" />
           </Text>
         )}
+        <audio {...audioProps} ref={audioRef} />
       </HStack>
     </div>
   );

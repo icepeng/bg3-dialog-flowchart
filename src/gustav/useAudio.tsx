@@ -1,38 +1,38 @@
-import { useEffect, useState } from "react";
-import { Howl } from "howler";
+import React, { useState } from "react";
 
 const VOICE_URL = "https://waldo.team/bg3_voice/";
 
-async function createAudio(src: string) {
-  return new Promise<Howl | undefined>((resolve) => {
-    const audio = new Howl({
-      src,
-    });
-    audio.once("load", () => {
-      resolve(audio);
-    });
-    audio.once("loaderror", () => {
-      resolve(undefined);
-    });
-  });
-}
+const visuallyHiddenStyle = {
+  border: "0",
+  clip: "rect(0 0 0 0)",
+  height: "1px",
+  margin: "-1px",
+  overflow: "hidden",
+  padding: "0",
+  position: "absolute",
+  width: "1px",
+  whiteSpace: "nowrap",
+  wordWrap: "normal",
+} as const;
 
-export function useAudio(handle: string) {
-  const [audio, setAudio] = useState<Howl | undefined>();
+export function useAudio(handle: string): {
+  isReady: boolean;
+  audioProps: React.AudioHTMLAttributes<HTMLAudioElement>;
+} {
+  const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    createAudio(`${VOICE_URL}${handle}.mp3`).then(setAudio);
-  }, [handle]);
+  const src = `${VOICE_URL}${handle}.mp3`;
 
-  function playAudio() {
-    if (!audio) {
-      return;
-    }
-    audio.play();
+  function onLoadedData() {
+    setIsReady(true);
   }
 
   return {
-    isAudioAvailable: !!audio,
-    playAudio,
+    isReady,
+    audioProps: {
+      src,
+      onLoadedData,
+      style: visuallyHiddenStyle,
+    },
   };
 }
