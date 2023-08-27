@@ -1,11 +1,12 @@
-import { CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { stringifyRuleGroup } from "@/gustav/utils";
+import { CopyIcon, ExternalLinkIcon, PhoneIcon } from "@chakra-ui/icons";
 import { Center, Divider, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import type * as Gustav from "@gustav/types";
+import { useAudio } from "@gustav/useAudio";
 import { useWeblate } from "@weblate/useWeblate";
 import { useState } from "react";
 import { useOnSelectionChange } from "reactflow";
 import { useNodeData } from "./useNodeData";
-import { stringifyRuleGroup } from "@/gustav/utils";
 
 function PropertiesPanel() {
   const [data, setData] = useState<Gustav.Node>();
@@ -133,9 +134,12 @@ const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
   TagText,
 }) => {
   const { getTranslatedText, getWeblateUrl } = useWeblate();
+  const sourceText = TagText.Text.Value;
+  const handle = TagText.Text.Handle;
+
+  const { isAudioAvailable, playAudio } = useAudio(handle);
 
   const url = getWeblateUrl(TagText);
-  const sourceText = TagText.Text.Value;
   const targetText = getTranslatedText(TagText);
 
   const handleCopy = () => {
@@ -155,6 +159,11 @@ const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
         <Text cursor="pointer" onClick={handleCopy}>
           Copy <CopyIcon mx="2px" />
         </Text>
+        {isAudioAvailable && (
+          <Text cursor="pointer" onClick={playAudio}>
+            Play <PhoneIcon mx="2px" />
+          </Text>
+        )}
       </HStack>
     </div>
   );

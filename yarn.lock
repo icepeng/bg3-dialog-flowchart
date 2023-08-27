@@ -2223,6 +2223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/howler@npm:^2.2.8":
+  version: 2.2.8
+  resolution: "@types/howler@npm:2.2.8"
+  checksum: 4ecbd07f234e621db725f3813575749e6481bb059b9115bd5e3491d5d2e0ab515fcd86062270b77052ba7e900b7a8531d6444bbf2967cfe01c62adf3ef4ff5d8
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.12":
   version: 7.0.12
   resolution: "@types/json-schema@npm:7.0.12"
@@ -2621,6 +2628,7 @@ __metadata:
     "@chakra-ui/react": ^2.8.0
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
+    "@types/howler": ^2.2.8
     "@types/react": ^18.2.15
     "@types/react-dom": ^18.2.7
     "@typescript-eslint/eslint-plugin": ^6.0.0
@@ -2631,6 +2639,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.3
     framer-motion: ^10.15.1
+    howler: ^2.2.3
     react: ^18.2.0
     react-dom: ^18.2.0
     reactflow: ^11.8.1
@@ -3623,6 +3632,13 @@ __metadata:
   dependencies:
     react-is: ^16.7.0
   checksum: b1538270429b13901ee586aa44f4cc3ecd8831c061d06cb8322e50ea17b3f5ce4d0e2e66394761e6c8e152cd8c34fb3b4b690116c6ce2bd45b18c746516cb9e8
+  languageName: node
+  linkType: hard
+
+"howler@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "howler@npm:2.2.3"
+  checksum: c04ce19411f4d86f8508d411a93aea943f128c2686b3df3c61383fd4ed8f5551232c4389aba3a8d4c8b0eeb34ae51df5a9c3ccd9ba48583ac53e9bf9fcbd1ecf
   languageName: node
   linkType: hard
 
