@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Howl } from "howler";
 
 const VOICE_URL = "https://waldo.team/bg3_voice/";
 
