@@ -43,7 +43,7 @@ export function getNodesPathThrough(
       graphForward[id][child] = 1;
       graphBackward[child][id] = 1;
     }
-    if (node.JumpTarget) {
+    if (node.Constructor === "Jump") {
       graphForward[id][node.JumpTarget] = 1;
       graphBackward[node.JumpTarget][id] = 1;
     }

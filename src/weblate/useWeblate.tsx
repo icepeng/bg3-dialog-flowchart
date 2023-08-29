@@ -78,8 +78,8 @@ function useWeblateState() {
     localStorage.setItem("apiToken", apiToken);
   }, [apiToken]);
 
-  function getWeblateUrl(tagText: Gustav.TagText) {
-    const unit = translationData?.[tagText.Text.Handle];
+  function getWeblateUrl(tagText: Gustav.LocalizedString) {
+    const unit = translationData?.[tagText.Handle];
     if (unit) {
       return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
     }
@@ -87,12 +87,18 @@ function useWeblateState() {
   }
 
   const getTranslatedText = useCallback(
-    (tagText: Gustav.TagText) => {
-      const unit = translationData?.[tagText.Text.Handle];
-      if (unit) {
-        return unit.target;
+    (localizedString: Gustav.LocalizedString) => {
+      if (!translationData) {
+        return undefined;
       }
-      return undefined;
+
+      const unit = translationData?.[localizedString.Handle];
+      if (!unit) {
+        console.warn("No translation unit found for", localizedString);
+        return "";
+      }
+
+      return unit.target;
     },
     [translationData]
   );
@@ -103,9 +109,17 @@ function useWeblateState() {
         return true;
       }
 
-      return !node.TaggedTextList.flatMap((taggedText) =>
-        taggedText.TagTexts.map(getTranslatedText)
-      ).includes("");
+      const rollAdvantageReason =
+        "RollAdvantageReason" in node ? node.RollAdvantageReason : null;
+      const tagTextStrings = node.TaggedTextList.flatMap((taggedText) =>
+        taggedText.TagTexts.map((x) => x.Text)
+      );
+      const localizedStrings = [
+        ...tagTextStrings,
+        ...(rollAdvantageReason ? [rollAdvantageReason] : []),
+      ];
+
+      return !localizedStrings.map(getTranslatedText).includes("");
     },
     [translationData, getTranslatedText]
   );

@@ -2,8 +2,8 @@ import { RollNode } from "@gustav/types";
 import { memo } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
 import { useNodeData } from "../useNodeData";
-import NodeTextList from "./NodeTextList";
 import NodeFlag from "./NodeFlag";
+import { NodeTextList } from "./NodeTextList";
 
 const RollNode = memo<NodeProps<RollNode>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
