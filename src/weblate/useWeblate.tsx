@@ -78,8 +78,8 @@ function useWeblateState() {
     localStorage.setItem("apiToken", apiToken);
   }, [apiToken]);
 
-  function getWeblateUrl(tagText: Gustav.TagText) {
-    const unit = translationData?.[tagText.Text.Handle];
+  function getWeblateUrl(tagText: Gustav.LocalizedString) {
+    const unit = translationData?.[tagText.Handle];
     if (unit) {
       return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
     }
@@ -87,8 +87,8 @@ function useWeblateState() {
   }
 
   const getTranslatedText = useCallback(
-    (tagText: Gustav.TagText) => {
-      const unit = translationData?.[tagText.Text.Handle];
+    (localizedString: Gustav.LocalizedString) => {
+      const unit = translationData?.[localizedString.Handle];
       if (unit) {
         return unit.target;
       }
@@ -102,9 +102,14 @@ function useWeblateState() {
       if (!translationData) {
         return true;
       }
+      
+      const rollAdvantageReason = (node as Gustav.RollNode).RollAdvantageReason;
+      if (rollAdvantageReason && getTranslatedText(rollAdvantageReason) === "") {
+        return false;
+      }
 
       return !node.TaggedTextList.flatMap((taggedText) =>
-        taggedText.TagTexts.map(getTranslatedText)
+        taggedText.TagTexts.map(x => getTranslatedText(x.Text))
       ).includes("");
     },
     [translationData, getTranslatedText]

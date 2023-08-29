@@ -3,7 +3,7 @@ import { memo } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
 import { useNodeData } from "../useNodeData";
 import NodeFlag from "./NodeFlag";
-import NodeTextList from "./NodeTextList";
+import { NodeTextList } from "./NodeTextList";
 
 const DialogNode = memo<NodeProps<Node>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();

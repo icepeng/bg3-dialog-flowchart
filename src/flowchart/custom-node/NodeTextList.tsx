@@ -1,5 +1,5 @@
 import { Divider, VStack } from "@chakra-ui/react";
-import { Node, TagText } from "@gustav/types";
+import { Node, LocalizedString } from "@gustav/types";
 import { stringifyRuleGroup } from "@gustav/utils";
 import { useWeblate } from "@weblate/useWeblate";
 import { Fragment } from "react";
@@ -8,7 +8,7 @@ interface NodeTextListProps {
   nodeData: Node;
 }
 
-const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
+export const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
   const isEndNode = nodeData.EndNode;
 
   return (
@@ -20,7 +20,7 @@ const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
             {hasRule && <div>{stringifyRuleGroup(TaggedText.RuleGroup)}</div>}
             <VStack divider={<Divider />}>
               {TaggedText.TagTexts.map((TagText) => (
-                <NodeText key={TagText.LineId} TagText={TagText} />
+                <NodeText key={TagText.LineId} LocalizedString={TagText.Text} />
               ))}
             </VStack>
           </Fragment>
@@ -32,14 +32,14 @@ const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
 };
 
 interface NodeTextProps {
-  TagText: TagText;
+  LocalizedString: LocalizedString;
 }
 
-const NodeText: React.FC<NodeTextProps> = ({ TagText }) => {
+export const NodeText: React.FC<NodeTextProps> = ({ LocalizedString: LocalizedString }) => {
   const { getTranslatedText } = useWeblate();
 
-  const sourceText = TagText.Text.Value;
-  const targetText = getTranslatedText(TagText);
+  const sourceText = LocalizedString.Value;
+  const targetText = getTranslatedText(LocalizedString);
 
   return (
     <div>
@@ -48,5 +48,3 @@ const NodeText: React.FC<NodeTextProps> = ({ TagText }) => {
     </div>
   );
 };
-
-export default NodeTextList;

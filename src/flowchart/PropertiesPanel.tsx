@@ -32,6 +32,7 @@ function PropertiesPanel() {
     );
 
   const speakerName = getSpeakerName(data.SpeakerNo);
+  const rollAdvantageReason = (data as Gustav.RollNode).RollAdvantageReason;
 
   return (
     <VStack
@@ -54,6 +55,9 @@ function PropertiesPanel() {
         <span>{data.UUID}</span>
         {data.EndNode && <div>{"<대화 종료>"}</div>}
       </div>
+      {rollAdvantageReason && 
+        <RollAdvantageProperties title="ROLL ADVANTAGE REASON" RollAdvantage={rollAdvantageReason} />
+      }
       {data.CheckFlags.length > 0 && (
         <FlagProperties title="CHECK FLAGS" FlagList={data.CheckFlags} />
       )}
@@ -69,6 +73,25 @@ function PropertiesPanel() {
     </VStack>
   );
 }
+
+const RollAdvantageProperties: React.FC<{
+  title: string;
+  RollAdvantage: Gustav.LocalizedString;
+}> = ({ title, RollAdvantage }) => {
+  return (
+    <div>
+      <Text fontSize="xs" fontWeight="semibold">
+        {title}
+      </Text>
+      <div>
+        <NodeText
+          speakerName=""
+          LocalizedString={RollAdvantage}
+        />
+      </div>
+    </div>
+  );
+};
 
 const FlagProperties: React.FC<{
   title: string;
@@ -118,7 +141,7 @@ const TextProperties: React.FC<{
                 <NodeText
                   key={TagText.LineId}
                   speakerName={speakerName}
-                  TagText={TagText}
+                  LocalizedString={TagText.Text}
                 />
               ))}
             </VStack>
@@ -129,19 +152,19 @@ const TextProperties: React.FC<{
   );
 };
 
-const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
+const NodeText: React.FC<{ speakerName: string; LocalizedString: Gustav.LocalizedString }> = ({
   speakerName,
-  TagText,
+  LocalizedString,
 }) => {
   const { getTranslatedText, getWeblateUrl } = useWeblate();
-  const sourceText = TagText.Text.Value;
-  const handle = TagText.Text.Handle;
+  const sourceText = LocalizedString.Value;
+  const handle = LocalizedString.Handle;
 
   const { isReady, audioProps } = useAudio(handle);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const url = getWeblateUrl(TagText);
-  const targetText = getTranslatedText(TagText);
+  const url = getWeblateUrl(LocalizedString);
+  const targetText = getTranslatedText(LocalizedString);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${speakerName}: ${sourceText}`);
@@ -157,9 +180,11 @@ const NodeText: React.FC<{ speakerName: string; TagText: Gustav.TagText }> = ({
             Weblate <ExternalLinkIcon mx="2px" />
           </Link>
         )}
-        <Text cursor="pointer" onClick={handleCopy}>
-          Copy <CopyIcon mx="2px" />
-        </Text>
+        {speakerName &&
+          <Text cursor="pointer" onClick={handleCopy}>
+            Copy <CopyIcon mx="2px" />
+          </Text>
+        }
         {isReady && (
           <Text cursor="pointer" onClick={() => audioRef.current?.play()}>
             Play <PhoneIcon mx="2px" />

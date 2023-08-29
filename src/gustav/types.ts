@@ -39,12 +39,14 @@ export interface RuleGroup {
   Rules: Rule[];
 }
 
+export interface LocalizedString {
+  Handle: string;
+  Value: string;
+}
+
 export interface TagText {
   LineId: string;
-  Text: {
-    Handle: string;
-    Value: string;
-  };
+  Text: LocalizedString;
 }
 
 export interface TaggedText {
@@ -107,6 +109,7 @@ export interface RollNode extends BaseNode {
   RollAbility: string;
   RollAdvantage: number;
   RollType: "SkillCheck" | "RawAbility" | "";
+  RollAdvantageReason?: LocalizedString;
 }
 
 export interface RollResultNode extends BaseNode {
