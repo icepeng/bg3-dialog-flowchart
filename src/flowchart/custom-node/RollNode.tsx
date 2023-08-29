@@ -2,8 +2,8 @@ import { RollNode } from "@gustav/types";
 import { memo } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
 import { useNodeData } from "../useNodeData";
-import { NodeTextList, NodeText } from "./NodeTextList";
 import NodeFlag from "./NodeFlag";
+import { NodeTextList } from "./NodeTextList";
 
 const RollNode = memo<NodeProps<RollNode>>(({ data, isConnectable }) => {
   const { getSpeakerName } = useNodeData();
@@ -27,9 +27,6 @@ const RollNode = memo<NodeProps<RollNode>>(({ data, isConnectable }) => {
           ? `${data.RollType}: ${data.RollAbility}`
           : data.RollAbility}
       </div>
-      {data.RollAdvantageReason && 
-        <NodeText LocalizedString={data.RollAdvantageReason} />
-      }
       <NodeTextList nodeData={data} />
       <Handle
         type="source"

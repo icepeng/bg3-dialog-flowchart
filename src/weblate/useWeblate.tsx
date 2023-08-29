@@ -88,11 +88,17 @@ function useWeblateState() {
 
   const getTranslatedText = useCallback(
     (localizedString: Gustav.LocalizedString) => {
-      const unit = translationData?.[localizedString.Handle];
-      if (unit) {
-        return unit.target;
+      if (!translationData) {
+        return undefined;
       }
-      return undefined;
+
+      const unit = translationData?.[localizedString.Handle];
+      if (!unit) {
+        console.warn("No translation unit found for", localizedString);
+        return "";
+      }
+
+      return unit.target;
     },
     [translationData]
   );
@@ -102,15 +108,18 @@ function useWeblateState() {
       if (!translationData) {
         return true;
       }
-      
-      const rollAdvantageReason = (node as Gustav.RollNode).RollAdvantageReason;
-      if (rollAdvantageReason && getTranslatedText(rollAdvantageReason) === "") {
-        return false;
-      }
 
-      return !node.TaggedTextList.flatMap((taggedText) =>
-        taggedText.TagTexts.map(x => getTranslatedText(x.Text))
-      ).includes("");
+      const rollAdvantageReason =
+        "RollAdvantageReason" in node ? node.RollAdvantageReason : null;
+      const tagTextStrings = node.TaggedTextList.flatMap((taggedText) =>
+        taggedText.TagTexts.map((x) => x.Text)
+      );
+      const localizedStrings = [
+        ...tagTextStrings,
+        ...(rollAdvantageReason ? [rollAdvantageReason] : []),
+      ];
+
+      return !localizedStrings.map(getTranslatedText).includes("");
     },
     [translationData, getTranslatedText]
   );

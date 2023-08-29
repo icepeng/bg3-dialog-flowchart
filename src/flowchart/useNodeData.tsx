@@ -62,7 +62,7 @@ function getEdgesFromGustav(
       };
       return edge;
     }),
-    ...(displayJumpEdge && gustavNode.JumpTarget
+    ...(displayJumpEdge && gustavNode.Constructor === "Jump"
       ? [
           {
             id: `${gustavNode.UUID}-jump`,

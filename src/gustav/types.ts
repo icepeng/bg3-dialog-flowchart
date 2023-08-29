@@ -68,24 +68,8 @@ export interface FlagGroup {
 }
 
 export interface BaseNode {
-  SourceNode?: string;
-  JumpTarget?: string;
   UUID: string;
-  Constructor:
-    | "TagAnswer"
-    | "TagGreeting"
-    | "TagQuestion"
-    | "Jump"
-    | "TagCinematic"
-    | "Alias"
-    | "RollResult"
-    | "ActiveRoll"
-    | "PassiveRoll"
-    | "Visual State"
-    | "Trade"
-    | "Pop"
-    | "FallibleQuestionResult"
-    | "Nested Dialog";
+  Constructor: string;
   EndNode: boolean;
   Root: boolean;
   ShowOnce: boolean;
@@ -98,10 +82,30 @@ export interface BaseNode {
   EditorData: EditorData;
 }
 
+export interface AnswerNode extends BaseNode {
+  Constructor: "TagAnswer";
+}
+
+export interface GreetingNode extends BaseNode {
+  Constructor: "TagGreeting";
+}
+
+export interface QuestionNode extends BaseNode {
+  Constructor: "TagQuestion";
+}
+
 export interface JumpNode extends BaseNode {
   Constructor: "Jump";
-  SourceNode: string;
   JumpTarget: string;
+}
+
+export interface CinematicNode extends BaseNode {
+  Constructor: "TagCinematic";
+}
+
+export interface AliasNode extends BaseNode {
+  Constructor: "Alias";
+  SourceNode: string;
 }
 
 export interface RollNode extends BaseNode {
@@ -109,7 +113,7 @@ export interface RollNode extends BaseNode {
   RollAbility: string;
   RollAdvantage: number;
   RollType: "SkillCheck" | "RawAbility" | "";
-  RollAdvantageReason?: LocalizedString;
+  RollAdvantageReason: LocalizedString | null;
 }
 
 export interface RollResultNode extends BaseNode {
@@ -117,20 +121,40 @@ export interface RollResultNode extends BaseNode {
   RollSuccess: boolean;
 }
 
-export interface CinematicNode extends BaseNode {
-  Constructor: "TagCinematic";
-}
-
 export interface VisualStateNode extends BaseNode {
   Constructor: "Visual State";
 }
 
+export interface TradeNode extends BaseNode {
+  Constructor: "Trade";
+}
+
+export interface PopNode extends BaseNode {
+  Constructor: "Pop";
+}
+
+export interface FallibleQuestionResultNode extends BaseNode {
+  Constructor: "FallibleQuestionResult";
+}
+
+export interface NestedDialogNode extends BaseNode {
+  Constructor: "Nested Dialog";
+}
+
 export type Node =
-  | BaseNode
+  | AnswerNode
+  | GreetingNode
+  | QuestionNode
+  | AliasNode
   | JumpNode
+  | CinematicNode
   | RollNode
   | RollResultNode
-  | CinematicNode;
+  | VisualStateNode
+  | TradeNode
+  | PopNode
+  | FallibleQuestionResultNode
+  | NestedDialogNode;
 
 interface SpeakerCharacter {
   DisplayName: string;

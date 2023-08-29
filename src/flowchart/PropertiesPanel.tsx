@@ -55,9 +55,12 @@ function PropertiesPanel() {
         <span>{data.UUID}</span>
         {data.EndNode && <div>{"<대화 종료>"}</div>}
       </div>
-      {rollAdvantageReason && 
-        <RollAdvantageProperties title="ROLL ADVANTAGE REASON" RollAdvantage={rollAdvantageReason} />
-      }
+      {rollAdvantageReason && (
+        <RollAdvantageProperties
+          title="ROLL ADVANTAGE REASON"
+          RollAdvantage={rollAdvantageReason}
+        />
+      )}
       {data.CheckFlags.length > 0 && (
         <FlagProperties title="CHECK FLAGS" FlagList={data.CheckFlags} />
       )}
@@ -84,10 +87,7 @@ const RollAdvantageProperties: React.FC<{
         {title}
       </Text>
       <div>
-        <NodeText
-          speakerName=""
-          LocalizedString={RollAdvantage}
-        />
+        <NodeText LocalizedString={RollAdvantage} />
       </div>
     </div>
   );
@@ -152,10 +152,10 @@ const TextProperties: React.FC<{
   );
 };
 
-const NodeText: React.FC<{ speakerName: string; LocalizedString: Gustav.LocalizedString }> = ({
-  speakerName,
-  LocalizedString,
-}) => {
+const NodeText: React.FC<{
+  speakerName?: string;
+  LocalizedString: Gustav.LocalizedString;
+}> = ({ speakerName, LocalizedString }) => {
   const { getTranslatedText, getWeblateUrl } = useWeblate();
   const sourceText = LocalizedString.Value;
   const handle = LocalizedString.Handle;
@@ -180,11 +180,11 @@ const NodeText: React.FC<{ speakerName: string; LocalizedString: Gustav.Localize
             Weblate <ExternalLinkIcon mx="2px" />
           </Link>
         )}
-        {speakerName &&
+        {speakerName && (
           <Text cursor="pointer" onClick={handleCopy}>
             Copy <CopyIcon mx="2px" />
           </Text>
-        }
+        )}
         {isReady && (
           <Text cursor="pointer" onClick={() => audioRef.current?.play()}>
             Play <PhoneIcon mx="2px" />

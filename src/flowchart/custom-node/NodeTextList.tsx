@@ -10,6 +10,11 @@ interface NodeTextListProps {
 
 export const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
   const isEndNode = nodeData.EndNode;
+  const rollAdvantageReason =
+    nodeData.Constructor === "ActiveRoll" ||
+    nodeData.Constructor === "PassiveRoll"
+      ? nodeData.RollAdvantageReason
+      : null;
 
   return (
     <VStack divider={<Divider borderWidth={2} />}>
@@ -19,6 +24,9 @@ export const NodeTextList: React.FC<NodeTextListProps> = ({ nodeData }) => {
           <Fragment key={i}>
             {hasRule && <div>{stringifyRuleGroup(TaggedText.RuleGroup)}</div>}
             <VStack divider={<Divider />}>
+              {rollAdvantageReason && (
+                <NodeText LocalizedString={rollAdvantageReason} />
+              )}
               {TaggedText.TagTexts.map((TagText) => (
                 <NodeText key={TagText.LineId} LocalizedString={TagText.Text} />
               ))}
@@ -35,7 +43,9 @@ interface NodeTextProps {
   LocalizedString: LocalizedString;
 }
 
-export const NodeText: React.FC<NodeTextProps> = ({ LocalizedString: LocalizedString }) => {
+export const NodeText: React.FC<NodeTextProps> = ({
+  LocalizedString: LocalizedString,
+}) => {
   const { getTranslatedText } = useWeblate();
 
   const sourceText = LocalizedString.Value;
