@@ -81,7 +81,7 @@ function useWeblateState() {
   function getWeblateUrl(tagText: Gustav.LocalizedString) {
     const unit = translationData?.[tagText.Handle];
     if (unit) {
-      return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?offset=${unit.position}`;
+      return `${TRANSLATE_PAGE_URL}/${unit.component}/ko/?checksum=${unit.checksum}`;
     }
     return undefined;
   }

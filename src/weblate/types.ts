@@ -7,6 +7,7 @@ export interface TranslationUnit {
   fuzzy: boolean;
   approved: boolean;
   component: string;
+  checksum: string;
 }
 
 export type TranslationData = {
