@@ -1,3 +1,4 @@
+import { Text } from "@chakra-ui/react";
 import { Node } from "@gustav/types";
 
 export interface NodeFlagProps {
@@ -15,7 +16,7 @@ const NodeFlag: React.FC<NodeFlagProps> = ({ nodeData }) => {
     <div>
       {checkFlags.length > 0 &&
         (checkFlagCount === 1 ? (
-          <span>({firstFlag.value || "!"}{firstFlag.Name})</span>
+          <Text as="span" color={firstFlag.value ? "blue.300" : "red.300"}>({firstFlag.value || "!"}{firstFlag.Name})</Text>
         ) : (
           <span>(Flag Check)</span>
         ))}
