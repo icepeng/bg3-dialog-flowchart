@@ -10,12 +10,12 @@ const NodeFlag: React.FC<NodeFlagProps> = ({ nodeData }) => {
   const checkFlagCount = checkFlags.flatMap(
     (flagGroup) => flagGroup.Flags
   ).length;
-  const firstFlag = checkFlags[0]?.Flags[0].Name;
+  const firstFlag = checkFlags[0]?.Flags[0];
   return (
     <div>
       {checkFlags.length > 0 &&
         (checkFlagCount === 1 ? (
-          <span>({firstFlag})</span>
+          <span>({firstFlag.value || "!"}{firstFlag.Name})</span>
         ) : (
           <span>(Flag Check)</span>
         ))}
