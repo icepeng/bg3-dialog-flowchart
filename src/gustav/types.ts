@@ -97,6 +97,7 @@ export interface QuestionNode extends BaseNode {
 export interface JumpNode extends BaseNode {
   Constructor: "Jump";
   JumpTarget: string;
+  JumpTargetPoint: number;
 }
 
 export interface CinematicNode extends BaseNode {
