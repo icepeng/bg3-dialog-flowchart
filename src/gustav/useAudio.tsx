@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const VOICE_URL = "https://waldo.team/bg3_voice/";
+const VOICE_URL = "https://waldo.team/bg3/voice/";
 
 const visuallyHiddenStyle = {
   border: "0",
