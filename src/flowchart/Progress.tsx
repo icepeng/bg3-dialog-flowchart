@@ -1,8 +1,9 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { CheckIcon, ChevronDownIcon, CloseIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { useWeblate } from "@weblate/useWeblate";
 
 function Progress() {
-  const { translationProgress, loadTranslationData } = useWeblate();
+  const { translationProgress, loadTranslationData, getWeblateSearchUrl } = useWeblate();
 
   if (!translationProgress) return null;
 
@@ -10,6 +11,10 @@ function Progress() {
     (translationProgress.translated / translationProgress.total) * 100;
   const fuzzyRatio =
     (translationProgress.fuzzy / translationProgress.total) * 100;
+
+  function openWeblateSearch(...params: string[]) {
+    window.open(getWeblateSearchUrl(...params), "_blank");
+  }
 
   return (
     <Flex>
@@ -28,6 +33,17 @@ function Progress() {
           <Box height="100%" width={`${fuzzyRatio}%`} background="yellow.500" />
         </Box>
       </Flex>
+      <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+          Search in Weblate
+        </MenuButton>
+        <MenuList>
+          <MenuItem icon={<HamburgerIcon />} onClick={() => openWeblateSearch()}>All</MenuItem>
+          <MenuItem icon={<CheckIcon />} onClick={() => openWeblateSearch("state:translated")}>Translated</MenuItem>
+          <MenuItem icon={<EditIcon />} onClick={() => openWeblateSearch("state:<translated")}>Needing action</MenuItem>
+          <MenuItem icon={<CloseIcon />} onClick={() => openWeblateSearch("state:empty")}>Empty</MenuItem>
+        </MenuList>
+      </Menu>
       <Button onClick={() => loadTranslationData()}>Reload</Button>
     </Flex>
   );

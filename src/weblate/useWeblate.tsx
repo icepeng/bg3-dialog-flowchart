@@ -6,6 +6,7 @@ import { useCallback } from "react";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";
 const TRANSLATE_PAGE_URL = "https://waldo.team/translate/bg3";
+const SEARCH_PAGE_URL = "https://waldo.team/search/bg3/";
 
 async function fetchTranslation(
   path: string,
@@ -107,6 +108,18 @@ function useWeblateState() {
     [translationData]
   );
 
+  const getWeblateSearchUrl = useCallback(
+    (... params: string[]) => {
+      if (!translationData) {
+        return undefined;
+      }
+      const locaition_query = `location:"${path.replace(".json", "")}:"`;
+      const query_str = params.concat([locaition_query]).join(" AND ")
+      return `${SEARCH_PAGE_URL}?q=${query_str}`;
+    },
+    [path, translationData]
+  );
+
   return {
     translationData,
     apiToken,
@@ -115,6 +128,7 @@ function useWeblateState() {
     getWeblateUrl,
     getTranslateUnit,
     loadTranslationData,
+    getWeblateSearchUrl,
   };
 }
 
