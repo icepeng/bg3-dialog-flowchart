@@ -156,7 +156,7 @@ const NodeText: React.FC<{
   speakerName?: string;
   LocalizedString: Gustav.LocalizedString;
 }> = ({ speakerName, LocalizedString }) => {
-  const { getTranslatedText, getWeblateUrl } = useWeblate();
+  const { getTranslateUnit, getWeblateUrl } = useWeblate();
   const sourceText = LocalizedString.Value;
   const handle = LocalizedString.Handle;
 
@@ -164,7 +164,8 @@ const NodeText: React.FC<{
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const url = getWeblateUrl(LocalizedString);
-  const targetText = getTranslatedText(LocalizedString);
+  const translateUnit = getTranslateUnit(LocalizedString);
+  const targetText = translateUnit?.target;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${speakerName}: ${sourceText}`);

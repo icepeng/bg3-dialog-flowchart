@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Gustav from "@gustav/types";
 import { useGustav } from "@gustav/useGustav";
-import { TranslationData, TranslationUnit } from "./types";
+import { TranslationData, TranslationState, TranslationUnit } from "./types";
 import { useCallback } from "react";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";
@@ -51,12 +51,16 @@ function useWeblateState() {
     if (translationData) {
       const total = Object.keys(translationData).length;
       const translated = Object.values(translationData).filter(
-        (item) => item.target !== ""
+        (item) => item.state >= TranslationState.TRANSLATED
+      ).length;
+      const fuzzy = Object.values(translationData).filter(
+        (item) => item.state === TranslationState.FUZZY
       ).length;
 
       return {
         total,
         translated,
+        fuzzy,
       };
     }
     return undefined;
@@ -86,7 +90,7 @@ function useWeblateState() {
     return undefined;
   }
 
-  const getTranslatedText = useCallback(
+  const getTranslateUnit = useCallback(
     (localizedString: Gustav.LocalizedString) => {
       if (!translationData) {
         return undefined;
@@ -95,33 +99,12 @@ function useWeblateState() {
       const unit = translationData?.[localizedString.Handle];
       if (!unit) {
         console.warn("No translation unit found for", localizedString);
-        return "";
+        return undefined;
       }
 
-      return unit.target;
+      return unit;
     },
     [translationData]
-  );
-
-  const checkNodeTranslated = useCallback(
-    (node: Gustav.Node) => {
-      if (!translationData) {
-        return true;
-      }
-
-      const rollAdvantageReason =
-        "RollAdvantageReason" in node ? node.RollAdvantageReason : null;
-      const tagTextStrings = node.TaggedTextList.flatMap((taggedText) =>
-        taggedText.TagTexts.map((x) => x.Text)
-      );
-      const localizedStrings = [
-        ...tagTextStrings,
-        ...(rollAdvantageReason ? [rollAdvantageReason] : []),
-      ];
-
-      return !localizedStrings.map(getTranslatedText).includes("");
-    },
-    [translationData, getTranslatedText]
   );
 
   return {
@@ -130,8 +113,7 @@ function useWeblateState() {
     translationProgress,
     setApiToken,
     getWeblateUrl,
-    getTranslatedText,
-    checkNodeTranslated,
+    getTranslateUnit,
     loadTranslationData,
   };
 }

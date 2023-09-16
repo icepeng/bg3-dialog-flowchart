@@ -6,6 +6,8 @@ function ConfigPanel() {
   const {
     highlightUntranslated,
     setHighlightUntranslated,
+    highlightFuzzy,
+    setHighlightFuzzy,
     displayJumpEdge,
     setDisplayJumpEdge,
   } = useWorkspace();
@@ -34,6 +36,22 @@ function ConfigPanel() {
             checked={highlightUntranslated}
             onChange={(e) => setHighlightUntranslated(e.target.checked)}
             id="highlight-untranslated"
+          />
+        </FormControl>
+      )}
+      {translationData && (
+        <FormControl
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <FormLabel htmlFor="highlight-fuzzy" mb="0">
+            수정 필요 강조
+          </FormLabel>
+          <Switch
+            checked={highlightFuzzy}
+            onChange={(e) => setHighlightFuzzy(e.target.checked)}
+            id="highlight-fuzzy"
           />
         </FormControl>
       )}

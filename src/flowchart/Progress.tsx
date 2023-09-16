@@ -6,8 +6,10 @@ function Progress() {
 
   if (!translationProgress) return null;
 
-  const ratio =
+  const translatedRatio =
     (translationProgress.translated / translationProgress.total) * 100;
+  const fuzzyRatio =
+    (translationProgress.fuzzy / translationProgress.total) * 100;
 
   return (
     <Flex>
@@ -15,10 +17,15 @@ function Progress() {
         <Text ml={2}>
           번역률:{" "}
           {`${translationProgress.translated}/${translationProgress.total}`},{" "}
-          {ratio.toFixed(2)}%
+          {translatedRatio.toFixed(2)}%, 수정 필요 {translationProgress.fuzzy}개
         </Text>
-        <Box flex={1} background="gray.500">
-          <Box height="100%" width={`${ratio}%`} background="blue.500" />
+        <Box display="flex" flex={1} background="gray.500">
+          <Box
+            height="100%"
+            width={`${translatedRatio}%`}
+            background="blue.500"
+          />
+          <Box height="100%" width={`${fuzzyRatio}%`} background="yellow.500" />
         </Box>
       </Flex>
       <Button onClick={() => loadTranslationData()}>Reload</Button>
