@@ -33,7 +33,7 @@ function ConfigPanel() {
             미번역 강조
           </FormLabel>
           <Switch
-            checked={highlightUntranslated}
+            isChecked={highlightUntranslated}
             onChange={(e) => setHighlightUntranslated(e.target.checked)}
             id="highlight-untranslated"
           />
@@ -49,7 +49,7 @@ function ConfigPanel() {
             수정 필요 강조
           </FormLabel>
           <Switch
-            checked={highlightFuzzy}
+            isChecked={highlightFuzzy}
             onChange={(e) => setHighlightFuzzy(e.target.checked)}
             id="highlight-fuzzy"
           />
