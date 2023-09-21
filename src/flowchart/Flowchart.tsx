@@ -53,7 +53,7 @@ function Flowchart() {
     >
       <Background />
       <Controls />
-      <MiniMap nodeColor="#6ede87" nodeStrokeWidth={3} zoomable pannable />
+      <MiniMap nodeColor="#6ede87" maskColor="#111111cc" nodeStrokeWidth={3} zoomable pannable />
       <Panel position="bottom-center">
         <ConfigPanel />
       </Panel>
