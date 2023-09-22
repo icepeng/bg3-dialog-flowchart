@@ -3,6 +3,7 @@ import * as Gustav from "@gustav/types";
 import { useGustav } from "@gustav/useGustav";
 import { TranslationData, TranslationState, TranslationUnit } from "./types";
 import { useCallback } from "react";
+import { getAllTextHandles } from "@/gustav/utils";
 
 const REMOTE_API_URL = "https://waldo.team/api/bg3_dialog";
 const TRANSLATE_PAGE_URL = "https://waldo.team/translate/bg3";
@@ -91,6 +92,20 @@ function useWeblateState() {
     return undefined;
   }
 
+  const getTranslationState = useCallback(
+    (handle: string) => translationData?.[handle]?.state,
+    [translationData]
+  );
+
+  const getNodeTranslationState = useCallback(
+    (node: Gustav.Node) => {
+      const nodeTexts = getAllTextHandles(node);
+      const translationStates = nodeTexts.map(getTranslationState)
+        .filter((state) => state !== undefined) as number[];
+      return Math.min(...translationStates);
+    }, [translationData]
+  );
+
   const getTranslateUnit = useCallback(
     (localizedString: Gustav.LocalizedString) => {
       if (!translationData) {
@@ -124,6 +139,8 @@ function useWeblateState() {
     translationData,
     apiToken,
     translationProgress,
+    getTranslationState,
+    getNodeTranslationState,
     setApiToken,
     getWeblateUrl,
     getTranslateUnit,

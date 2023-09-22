@@ -4,10 +4,9 @@ import { useWeblate } from "@weblate/useWeblate";
 import { useReactFlow } from "reactflow";
 import { useNodeData } from "./useNodeData";
 import { TranslationState } from "@/weblate/types";
-import type * as Gustav from "@gustav/types";
 
 function Progress() {
-  const { translationProgress, loadTranslationData, getWeblateSearchUrl, translationData } = useWeblate();
+  const { translationProgress, loadTranslationData, getWeblateSearchUrl, getNodeTranslationState } = useWeblate();
   const { processedNodes } = useNodeData();
   const { fitView } = useReactFlow();
 
@@ -22,24 +21,8 @@ function Progress() {
     window.open(getWeblateSearchUrl(...params), "_blank");
   }
 
-  // TODO: Please move these functions to somewhere else
-  function isTranslationEmpty(handle: string): boolean {
-    const unit = translationData?.[handle];
-    return (unit && unit.state == TranslationState.EMPTY) ?? false;
-  }
-
-  function nodeHasEmptyTranslation(nodeData: Gustav.BaseNode): boolean {
-    const rollAdvantageReason = (nodeData as Gustav.RollNode).RollAdvantageReason;
-    if (rollAdvantageReason && isTranslationEmpty(rollAdvantageReason.Handle)) {
-      return true;
-    }
-    return nodeData.TaggedTextList.some(tt =>
-      tt.TagTexts.some(t => isTranslationEmpty(t.Text.Handle))
-    );
-  }
-
   function gotoRandomUntranslatedNode() {
-    const untranslatedNodes = processedNodes.filter(n => nodeHasEmptyTranslation(n.data));
+    const untranslatedNodes = processedNodes.filter(n => getNodeTranslationState(n.data) == TranslationState.EMPTY);
 
     if (untranslatedNodes.length === 0) {
       alert("모든 노드가 번역되었습니다.");

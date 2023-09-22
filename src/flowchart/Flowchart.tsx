@@ -12,10 +12,13 @@ import { useNodeData } from "./useNodeData";
 import { useWorkspace } from "./useWorkspace";
 import { nodeTypes } from "./custom-node";
 import ConfigPanel from "./ConfigPanel";
+import { useWeblate } from "@/weblate/useWeblate";
+import { TranslationState } from "@/weblate/types";
 
 function Flowchart() {
   const { rootId, togglePinnedId } = useWorkspace();
   const { processedNodes, processedEdges } = useNodeData();
+  const { getNodeTranslationState } = useWeblate();
   const { fitView, setNodes, setEdges } = useReactFlow();
 
   useEffect(() => {
@@ -42,6 +45,23 @@ function Flowchart() {
     [fitView, togglePinnedId]
   );
 
+  const nodeColor = useCallback(
+    (node: Node<Gustav.Node>) => {
+      switch (getNodeTranslationState(node.data)) {
+        case TranslationState.APPROVED:
+          return 'blue';
+        case TranslationState.TRANSLATED:
+          return 'lightgreen';
+        case TranslationState.FUZZY:
+          return 'yellow';
+        case TranslationState.EMPTY:
+          return 'red';
+        default: // node without texts
+          return '#FFFFFF33';
+      }
+    }, [processedNodes, getNodeTranslationState]
+  );
+
   return (
     <ReactFlow
       defaultNodes={processedNodes}
@@ -53,7 +73,7 @@ function Flowchart() {
     >
       <Background />
       <Controls />
-      <MiniMap nodeColor="#6ede87" maskColor="#111111cc" nodeStrokeWidth={3} zoomable pannable />
+      <MiniMap nodeColor={nodeColor} maskColor="#111111cc" nodeStrokeWidth={3} zoomable pannable />
       <Panel position="bottom-center">
         <ConfigPanel />
       </Panel>

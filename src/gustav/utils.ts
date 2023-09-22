@@ -1,5 +1,5 @@
 import { floydWarshall } from "./floyd";
-import { Node, RuleGroup } from "./types";
+import { Node, RollNode, RuleGroup } from "./types";
 
 export function parsePosition(position: string) {
   const [x, y] = position.split(";");
@@ -110,4 +110,14 @@ export function stringifyRuleGroup(ruleGroup: RuleGroup) {
     ),
     TagCombineOp
   );
+}
+
+export function getAllTextHandles(node: Node): string[] {
+  const rollAdvantageReason = (node as RollNode).RollAdvantageReason;
+  const taggedTextHandles = node.TaggedTextList.flatMap((tt) => tt.TagTexts.flatMap((t) => t.Text.Handle))
+  if (rollAdvantageReason) {
+    return [rollAdvantageReason.Handle, ...taggedTextHandles];
+  } else {
+    return taggedTextHandles
+  }
 }
