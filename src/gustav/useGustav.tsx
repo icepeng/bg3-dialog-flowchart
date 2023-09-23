@@ -12,15 +12,21 @@ type GustavProviderProps = {
 
 const urlParams = new URLSearchParams(window.location.search);
 
+function normalizePath(path: string) {
+  return path.replace(/\\/g, "/").replace(/(\.\w+)+$/, "");
+}
+
 function useGustavState() {
-  const [path, setPath] = React.useState<string>(
-    urlParams.get("path") ?? DEFAULT_PATH
+  const [path, setPathInternal] = React.useState<string>(
+    normalizePath(urlParams.get("path") ?? DEFAULT_PATH)
   );
   const [dialogData, setDialogData] = React.useState<DialogData>();
 
+  const setPath = (newPath: string) => setPathInternal(normalizePath(newPath));
+
   React.useEffect(() => {
     if (path !== undefined) {
-      fetch(DIALOG_URL + path)
+      fetch(DIALOG_URL + path + ".json")
         .then((response) => response.json())
         .then((data) => setDialogData(data));
     }

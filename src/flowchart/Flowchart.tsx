@@ -14,8 +14,11 @@ import { nodeTypes } from "./custom-node";
 import ConfigPanel from "./ConfigPanel";
 import { useWeblate } from "@/weblate/useWeblate";
 import { TranslationState } from "@/weblate/types";
+import { useGustav } from "@/gustav/useGustav";
+import dialogIds from "@/gustav/dialog_ids.json";
 
 function Flowchart() {
+  const { setPath } = useGustav();
   const { rootId, togglePinnedId } = useWorkspace();
   const { processedNodes, processedEdges } = useNodeData();
   const { getNodeTranslationState } = useWeblate();
@@ -40,6 +43,11 @@ function Flowchart() {
       if (node.data.Constructor === "Jump") {
         const targetId = node.data.JumpTarget!;
         fitView({ nodes: [{ id: targetId }], duration: 200 });
+      }
+      if (node.data.Constructor === "Nested Dialog") {
+        const targetId = (node.data as Gustav.NestedDialogNode).NestedDialogNodeUUID;
+        const dialogId = (dialogIds as Record<string, string>)[targetId];
+        setPath(dialogId);
       }
     },
     [fitView, togglePinnedId]

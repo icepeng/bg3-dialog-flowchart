@@ -7,6 +7,7 @@ import JumpNode from "./JumpNode";
 import RollNode from "./RollNode";
 import RollResultNode from "./RollResultNode";
 import VisualStateNode from "./VisualStateNode";
+import NestedDialogNode from "./NestedDialogNdoe";
 
 export const nodeTypes: Record<
   Gustav.Node["Constructor"],
@@ -17,7 +18,7 @@ export const nodeTypes: Record<
   TagAnswer: DialogNode,
   TagQuestion: DialogNode,
   TagGreeting: DialogNode,
-  "Nested Dialog": DialogNode,
+  "Nested Dialog": NestedDialogNode,
   RollResult: RollResultNode,
   Pop: DialogNode,
   ActiveRoll: RollNode,

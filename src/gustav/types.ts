@@ -140,6 +140,7 @@ export interface FallibleQuestionResultNode extends BaseNode {
 
 export interface NestedDialogNode extends BaseNode {
   Constructor: "Nested Dialog";
+  NestedDialogNodeUUID: string;
 }
 
 export type Node =
