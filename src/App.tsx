@@ -20,6 +20,7 @@ import { GustavProvider, useGustav } from "./gustav/useGustav";
 import theme from "./theme";
 import { WeblateProvider, useWeblate } from "./weblate/useWeblate";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import DialogInfoModal from "./DialogInfoModal";
 
 function PathSelector() {
   const { path, setPath } = useGustav();
@@ -42,6 +43,7 @@ function PathSelector() {
 
   return (
     <Flex>
+      <DialogInfoModal />
       <Input
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}

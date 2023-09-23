@@ -183,4 +183,5 @@ export interface DialogData {
   RootNodes: string[];
   Nodes: Record<string, Node>;
   SpeakerDict: Record<string, Speaker>;
+  Synopsis: string;
 }
