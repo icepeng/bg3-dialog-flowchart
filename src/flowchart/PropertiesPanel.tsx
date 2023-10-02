@@ -55,6 +55,14 @@ function PropertiesPanel() {
         <span>{data.UUID}</span>
         {data.EndNode && <div>{"<대화 종료>"}</div>}
       </div>
+      {data.EditorData.NodeContext && (
+        <div>
+          <Text fontSize="xs" fontWeight="semibold">
+            CONTEXT
+          </Text>
+          <div>{data.EditorData.NodeContext}</div>  
+        </div>
+      )}
       {rollAdvantageReason && (
         <RollAdvantageProperties
           title="ROLL ADVANTAGE REASON"
